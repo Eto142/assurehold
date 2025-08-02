@@ -30,7 +30,7 @@
     </section>
 
     <!-- Trust Badges Section -->
-    <div class="partners-section">
+    {{-- <div class="partners-section">
         <div class="container">
             <div class="row align-items-center justify-content-center">
                 <div class="col-auto">
@@ -50,7 +50,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Services Section -->
     <section id="services" class="services-section">
