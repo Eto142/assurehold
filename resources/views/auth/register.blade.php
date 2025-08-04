@@ -31,14 +31,14 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label for="firstName" class="form-label">First Name</label>
-                            <input type="text" class="form-control" id="firstName" name="first_name" required>
+                            <input type="text" class="form-control" id="firstName" name="first_name" placeholder="Enter First Name" required>
                          <div class="error-message">
                                 @error('first_name') {{ $message }} @enderror
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label for="lastName" class="form-label">Last Name</label>
-                            <input type="text" class="form-control" id="lastName" name="last_name" required>
+                            <input type="text" class="form-control" id="lastName" name="last_name"  placeholder="Enter Last Name" required>
                          <div class="error-message">
                                 @error('last_name') {{ $message }} @enderror
                             </div>
@@ -47,7 +47,7 @@
                     
                     <div class="mb-3 mt-3">
                         <label for="email" class="form-label">Email Address</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
+                        <input type="email" class="form-control" id="email" name="email"  placeholder="Enter Email" required>
                          <div class="error-message">
                                 @error('email') {{ $message }} @enderror
                             </div>
@@ -55,7 +55,7 @@
                     
                     <div class="mb-3">
                         <label for="company" class="form-label">Company Name</label>
-                        <input type="text" class="form-control" id="company" name="company" required>
+                        <input type="text" class="form-control" id="company" name="company"  placeholder="Enter Company Name" required>
                      <div class="error-message">
                                 @error('company') {{ $message }} @enderror
                             </div>
@@ -63,7 +63,7 @@
                     
                     <div class="mb-3">
                         <label for="phone" class="form-label">Phone Number</label>
-                        <input type="tel" class="form-control" id="phone" name="phone">
+                        <input type="tel" class="form-control" id="phone" name="phone"  placeholder="Enter Phone Number">
                      <div class="error-message">
                                 @error('phone') {{ $message }} @enderror
                             </div>
@@ -71,17 +71,32 @@
                     
                     <div class="mb-3">
                         <label for="country" class="form-label">Country</label>
-                        <input type="text" class="form-control" id="country" name="country">
+                        <input type="text" class="form-control" id="country" name="country"  placeholder="Enter Country">
                      <div class="error-message">
                                 @error('country') {{ $message }} @enderror
                             </div>
                     </div>
+                   
+                    <div class="mb-3">
+                        <label for="plaintiff" class="form-label">Plaintiff</label>
+                        <input type="text" class="form-control" id="plaintiff" name="plaintiff"  placeholder="Enter Plaintiff">
+                     <div class="error-message">
+                                @error('plaintiff') {{ $message }} @enderror
+                            </div>
+                    </div>
 
+                     <div class="mb-3">
+                        <label for="defendant" class="form-label">defendant</label>
+                        <input type="text" class="form-control" id="defendant" name="defendant"  placeholder="Enter Defendant">
+                     <div class="error-message">
+                                @error('defendant') {{ $message }} @enderror
+                            </div>
+                    </div>
 
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
                         <div class="input-group">
-                            <input type="password" class="form-control" name="password" id="password" required>
+                            <input type="password" class="form-control" name="password" id="password"  placeholder="Enter Password" required>
                             
                              <div class="error-message">
                         @error('password') {{ $message }} @enderror
@@ -104,7 +119,7 @@
                     
                     <div class="mb-3">
                         <label for="confirmPassword" class="form-label">Confirm Password</label>
-                        <input type="password" class="form-control" id="confirmPassword" name="password_confirmation" required>
+                        <input type="password" class="form-control" id="confirmPassword" name="password_confirmation" placeholder="Enter Confirm Password" required>
                        <div class="error-message">
                         @error('password_confirmation') {{ $message }} @enderror
                     </div>

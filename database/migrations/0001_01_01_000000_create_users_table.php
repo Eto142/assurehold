@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('country')->nullable();   
             $table->string('company')->nullable(); 
+            $table->string('plaintiff')->nullable(); 
+            $table->string('defendant')->nullable(); 
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

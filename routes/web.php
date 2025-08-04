@@ -35,8 +35,12 @@ Route::post('/logout', [App\Http\Controllers\Auth\AuthController::class, 'logout
 Route::prefix('user')->as('user.')->middleware('auth')->group(function () {
     Route::get('/home', [DashboardController::class, 'index'])->name('home'); // user.home
       Route::get('/connect-escrow', [DashboardController::class, 'ConnectEscrow'])->name('connectescrow'); // user.home
-   
-});
+     Route::get('/escrow-wallet-verification', [DashboardController::class, 'EscrowWalletVerification'])->name('escrow.wallet.verification'); // user.home
+    Route::get('/transaction-agreement', [DashboardController::class, 'TransactionAgreement'])->name('transaction.agreement'); // user.home
+    Route::get('/bank-information', [DashboardController::class, 'BankInformation'])->name('bank.information'); // user.home
+    Route::get('/pay-option', [DashboardController::class, 'PayOption'])->name('pay.option'); // user.pay.option
+    Route::get('/approve-payment', [DashboardController::class, 'ApprovePayment'])->name('approve.payment'); // user.pay.option
+    });
 
 
 

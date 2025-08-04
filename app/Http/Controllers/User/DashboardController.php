@@ -27,4 +27,32 @@ class DashboardController extends Controller
    return view('user.connect-escrow');
 }
 
+public function EscrowWalletVerification(){
+
+  return view('user.escrowwallet-verification');
+}
+
+
+public function TransactionAgreement(){
+
+  return view('user.transaction-agreement');
+}
+
+public function BankInformation(){
+
+  return view('user.bank-information');
+}
+
+public function PayOption(){
+
+  return view('user.pay-option');
+}
+
+
+public function ApprovePayment(){
+
+  return view('user.approve-payment');
+}
+
+
 }

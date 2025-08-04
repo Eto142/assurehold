@@ -20,41 +20,6 @@ class RegisterController extends Controller
     }
 
 
-
-// public function register(Request $request)
-// {
-//     $request->validate([
-//         'first_name' => 'required|string|max:255',
-//         'last_name' => 'required|string|max:255',
-//         'email' => 'required|string|email|max:255|unique:users',
-//         'phone' => 'required|string|max:255',
-//         'company' => 'required|string|max:255',
-//         'country' => 'required|string|max:255',
-//         'password' => 'required|string|min:8|confirmed',
-//     ]);
-
-  
-//     $user = User::create([
-//         'first_name' => $request->first_name,
-//         'last_name' => $request->last_name,
-//         'email' => $request->email,
-//         'phone' => $request->phone,
-//         'company' => $request->company,
-//         'country' => $request->country,
-//         'password' => Hash::make($request->password),
-//     ]);
-
-//     // Send welcome email
-//     // Mail::to($user->email)->send(new WelcomeMail($user));
-
-//     auth()->login($user);
-
-//     return redirect('login')->with('success', 'Registration successful! Please check your email for account details.');
-// }
-
-
-
-
 public function register(Request $request)
 {
     try {
@@ -63,6 +28,8 @@ public function register(Request $request)
             'last_name'  => 'required|string|max:255',
             'phone'  => 'required|string|max:255',
             'country'  => 'required|string|max:255',
+            'defendant'  => 'required|string|max:255', 
+            'plaintiff'  => 'required|string|max:255',  
             'company'  => 'required|string|max:255',
             'email'      => 'required|email|unique:users,email',
             'password'   => 'required|string|min:8|confirmed',
@@ -78,6 +45,8 @@ public function register(Request $request)
             'country'  => $request->input('country'),
             'company'  => $request->input('company'),
             'phone'  => $request->input('phone'),
+            'plaintiff'  => $request->input('plaintiff'),
+            'defendant'  => $request->input('defendant'),
             'email'      => $request->input('email'),
             'password'   => bcrypt($request->input('password')),
         ]);

@@ -77,38 +77,38 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="wallet.html">
+                        <a class="nav-link" href="{{ route('user.escrow.wallet.verification') }}">
                             <i class="fas fa-wallet"></i>
-                            <span>Escrow Wallet</span>
+                            <span>Escrow Wallet Account Verification</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link" href="verification.html">
                             <i class="fas fa-user-check"></i>
                             <span>Account Verification</span>
                          
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item">
-                        <a class="nav-link" href="agreement.html">
+                        <a class="nav-link" href="{{ route('user.transaction.agreement') }}">
                             <i class="fas fa-file-contract"></i>
                             <span>Transaction Agreement</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="banking.html">
+                        <a class="nav-link" href="{{ route('user.bank.information') }}">
                             <i class="fas fa-university"></i>
                             <span>Bank Information</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="approve.html">
+                        <a class="nav-link" href="{{ route('user.approve.payment') }}">
                             <i class="fas fa-check-circle"></i>
                             <span>Approve Payment</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="payment.html">
+                        <a class="nav-link" href="{{ route('user.pay.option') }}">
                             <i class="fas fa-credit-card"></i>
                             <span>Pay Option</span>
                         </a>
