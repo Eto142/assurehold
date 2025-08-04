@@ -86,7 +86,7 @@
                     </div>
 
                      <div class="mb-3">
-                        <label for="defendant" class="form-label">defendant</label>
+                        <label for="defendant" class="form-label">Defendant</label>
                         <input type="text" class="form-control" id="defendant" name="defendant"  placeholder="Enter Defendant">
                      <div class="error-message">
                                 @error('defendant') {{ $message }} @enderror
