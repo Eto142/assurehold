@@ -77,21 +77,21 @@
                             </div>
                     </div>
                    
-                    <div class="mb-3">
-                        <label for="plaintiff" class="form-label">Plaintiff</label>
-                        <input type="text" class="form-control" id="plaintiff" name="plaintiff"  placeholder="Enter Plaintiff">
-                     <div class="error-message">
-                                @error('plaintiff') {{ $message }} @enderror
-                            </div>
-                    </div>
+                
 
-                     <div class="mb-3">
-                        <label for="defendant" class="form-label">Defendant</label>
-                        <input type="text" class="form-control" id="defendant" name="defendant"  placeholder="Enter Defendant">
-                     <div class="error-message">
-                                @error('defendant') {{ $message }} @enderror
-                            </div>
-                    </div>
+<div class="mb-3">
+    <label for="role" class="form-label">Select Role</label>
+    <select class="form-select" id="role" name="role">
+        <option value="">-- Select Option --</option>
+        <option value="Plaintiff">Plaintiff</option>
+        <option value="Defendant">Defendant</option>
+    </select>
+    <div class="error-message">
+        @error('role') {{ $message }} @enderror
+    </div>
+</div>
+
+
 
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>

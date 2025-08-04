@@ -23,8 +23,7 @@ class User extends Authenticatable
         'email',
         'phone',
         'company',
-        'plaintiff',
-        'defendant',
+        'role',
         'country',
         'password',
     ];
