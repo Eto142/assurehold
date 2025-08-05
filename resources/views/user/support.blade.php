@@ -1,11 +1,12 @@
 @include('user.header')
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transaction Agreement | AssureHold</title>
+    <title>Support | AssureHold</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -156,14 +157,10 @@
 
         <div class="agreement-card">
             <div class="text-center">
-               <form method="POST" action="{{ route('user.connect.attorney') }}">
-                       @csrf
-                       <input type="hidden" name="email" value="{{ Auth::user()->email }}">
                 <button type="button" class="agreement-btn">
                     <i class="fas fa-file-signature agreement-icon"></i>
                     Review Agreement
                 </button>
-            </form>
             </div>
 
             <!-- Agreement Content (initially hidden) -->

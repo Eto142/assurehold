@@ -82,25 +82,20 @@
                             <span>Escrow Wallet Account Verification</span>
                         </a>
                     </li>
-                    {{-- <li class="nav-item">
-                        <a class="nav-link" href="verification.html">
-                            <i class="fas fa-user-check"></i>
-                            <span>Account Verification</span>
-                         
-                        </a>
-                    </li> --}}
+                    
+
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('user.transaction.agreement') }}">
                             <i class="fas fa-file-contract"></i>
                             <span>Transaction Agreement</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link" href="{{ route('user.bank.information') }}">
                             <i class="fas fa-university"></i>
                             <span>Bank Information</span>
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('user.approve.payment') }}">
                             <i class="fas fa-check-circle"></i>
@@ -114,14 +109,23 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="cashout.html">
+                        <a class="nav-link" href="{{ route('user.cashout') }}">
                             <i class="fas fa-money-bill-wave"></i>
-                            <span>Complete Verification</span>
+                            <span>Complete Verification to cashout</span>
             
                         </a>
                     </li>
+
+                    {{-- <li class="nav-item">
+                        <a class="nav-link" href="{{ route('user.profile') }}">
+                            <i class="fas fa-user-check"></i>
+                            <span>Profile</span>
+                         
+                        </a>
+                    </li>  --}}
+
                     <li class="nav-item mt-3">
-                        <a class="nav-link" href="support.html">
+                        <a class="nav-link" href="{{ route('user.support') }}">
                             <i class="fas fa-headset"></i>
                             <span>Support Center</span>
                         </a>

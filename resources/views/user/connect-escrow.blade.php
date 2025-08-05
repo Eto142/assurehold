@@ -1,5 +1,17 @@
 @include('user.header')
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if(session('success'))
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: '{{ session("success") }}',
+        confirmButtonColor: '#3085d6'
+    });
+</script>
+@endif
 
   <!-- Main Content -->
             <main class="main-content">
@@ -7,10 +19,16 @@
                     <h1 class="connect-title">Connect with Escrow Attorney</h1>
                     <p class="connect-subtitle">Get professional legal guidance for your escrow transaction. Our certified attorney will contact you within 24 hours.</p>
                     
-                    <button type="button" class="connect-btn">
-                        <i class="fas fa-paper-plane connect-icon"></i>
-                        Connect Attorney Now
-                    </button>
+
+                   <form method="POST" action="{{ route('user.connect.attorney') }}">
+                       @csrf
+                       <input type="hidden" name="email" value="{{ Auth::user()->email }}">
+                       <button type="submit" class="connect-btn">
+                           <i class="fas fa-paper-plane connect-icon"></i>
+                           Connect Attorney Now
+                       </button>
+                   </form>
+
                 </div>
             </main>
         </div>

@@ -290,7 +290,7 @@
             <div class="payment-methods">
                 <div class="method-tabs">
                     <button class="tab-btn active" data-tab="crypto">Cryptocurrency</button>
-                    <button class="tab-btn" data-tab="bank">Bank Transfer</button>
+                    {{-- <button class="tab-btn" data-tab="bank">Bank Transfer</button> --}}
                 </div>
 
                 <div class="tab-content active" id="crypto-tab">

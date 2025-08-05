@@ -54,5 +54,26 @@ public function ApprovePayment(){
   return view('user.approve-payment');
 }
 
+public function Cashout(){
+
+  return view('user.cashout');
+}
+
+
+public function Support(){
+
+  return view('user.support');
+}
+
+
+public function Profile(){
+
+  return view('user.profile');
+}
+
+
+
+
+
 
 }
