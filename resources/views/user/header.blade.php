@@ -90,12 +90,12 @@
                             <span>Transaction Agreement</span>
                         </a>
                     </li>
-                    {{-- <li class="nav-item">
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('user.bank.information') }}">
                             <i class="fas fa-university"></i>
                             <span>Bank Information</span>
                         </a>
-                    </li> --}}
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('user.approve.payment') }}">
                             <i class="fas fa-check-circle"></i>
