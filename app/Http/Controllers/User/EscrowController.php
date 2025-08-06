@@ -36,35 +36,56 @@ public function TransactionAgreement(Request $request)
 }
 
 
-    public function verify(Request $request)
-    {
-        $validated = $request->validate([
-            'first_name'         => 'required|string|max:100',
-            'last_name'          => 'required|string|max:100',
-            'dob'                => 'required|date',
-            'phone'              => 'required|string|max:20',
-            'street'             => 'required|string|max:255',
-            'city'               => 'required|string|max:100',
-            'state'              => 'required|string|max:100',
-            'zip'                => 'required|string|max:20',
-            'country'            => 'required|string|max:100',
-            'purpose'            => 'required|string',
-            'transaction_details'=> 'required|string',
-            'terms_agreement'    => 'accepted',
-            'other_purpose'      => 'nullable|string',
+
+
+
+
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'firstName' => 'required|string',
+        'lastName' => 'required|string',
+        'dob' => 'required|date',
+        'phone' => 'required|string',
+        'street' => 'required|string',
+        'city' => 'required|string',
+        'state' => 'required|string',
+        'zip' => 'required|string',
+        'country' => 'required|string',
+        'purpose' => 'required|string',
+        'otherPurpose' => 'nullable|string',
+        'transactionDetails' => 'required|string',
+        'termsAgreement' => 'accepted'
+    ]);
+
+    try {
+        // First insert with status = 0 (pending)
+        $escrow = Escrow::create([
+            'first_name' => $validated['firstName'],
+            'last_name' => $validated['lastName'],
+            'dob' => $validated['dob'],
+            'phone' => $validated['phone'],
+            'street' => $validated['street'],
+            'city' => $validated['city'],
+            'state' => $validated['state'],
+            'zip' => $validated['zip'],
+            'country' => $validated['country'],
+            'purpose' => $validated['purpose'],
+            'other_purpose' => $validated['otherPurpose'] ?? null,
+            'transaction_details' => $validated['transactionDetails'],
+            'agreed' => true,
+            'status' => 0, // initially pending
         ]);
 
-        $details = collect($validated)->map(function ($val, $key) {
-            return ucfirst(str_replace('_', ' ', $key)) . ': ' . $val;
-        })->implode("\n");
+        // Then update to approved = 1 (if no exception)
+        $escrow->update(['status' => 1]);
 
-        Mail::raw("New Escrow Verification Submission:\n\n" . $details, function ($message) {
-            $message->to('attorney@assurehold.com')
-                    ->subject('New Escrow Wallet Verification Request');
-        });
-
-        return back()->with('success', 'Your verification details have been submitted successfully.');
+        return redirect()->back()->with('success', 'Verification approved and stored!');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Submission failed. Please try again.');
     }
+}
+
 }
 
 
