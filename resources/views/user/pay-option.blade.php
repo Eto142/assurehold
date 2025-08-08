@@ -285,7 +285,7 @@
                 <p class="payment-subtitle">Choose your preferred payment method to complete your transaction</p>
             </div>
 
-
+       @if($escrow && $escrow->status == 1)
 
             <div class="payment-methods">
                 <div class="method-tabs">
@@ -421,6 +421,13 @@
                 <i class="fas fa-check-circle"></i> Wallet address copied to clipboard!
             </div>
         </div>
+
+        @else
+    <div class="alert alert-warning">
+        <i class="fas fa-exclamation-circle"></i>
+        Your verification is pending. Payment options will be available once your status is approved.
+    </div>
+@endif
     </div>
 
     <script>

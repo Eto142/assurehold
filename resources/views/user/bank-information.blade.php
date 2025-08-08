@@ -283,12 +283,12 @@
                     <textarea id="bankAddress" class="form-control" name="bank_address" rows="2" required></textarea>
                 </div>
                 
-                {{-- <div class="form-check mt-4">
+                <div class="form-check mt-4">
                     <input class="form-check-input" type="checkbox" id="confirmAccuracy" required>
                     <label class="form-check-label" for="confirmAccuracy">
                         I confirm that all information provided is accurate
                     </label>
-                </div> --}}
+                </div>
 
                 <button type="submit" class="btn-link">
                     <i class="fas fa-link me-2"></i> Link Bank Account
@@ -355,42 +355,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    {{-- <script>
-        document.getElementById('bankForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form values
-            const formData = {
-                fullName: document.getElementById('fullName').value,
-                idNumber: document.getElementById('idNumber').value,
-                streetAddress: document.getElementById('streetAddress').value,
-                city: document.getElementById('city').value,
-                state: document.getElementById('state').value,
-                zipCode: document.getElementById('zipCode').value,
-                country: document.getElementById('country').value,
-                bankName: document.getElementById('bankName').value,
-                accountNumber: document.getElementById('accountNumber').value,
-                routingNumber: document.getElementById('routingNumber').value,
-                swiftCode: document.getElementById('swiftCode').value,
-                bankAddress: document.getElementById('bankAddress').value
-            };
-            
-            // In a real application, you would send this data to your backend
-            console.log('Bank information submitted:', formData);
-            
-            // Here you would typically:
-            // 1. Save the bank information to your database
-            // 2. Initiate verification process
-            // 3. Show success message
-            
-            alert('Your bank information has been submitted for verification. You will receive a confirmation email shortly.');
-            
-            // Reset form
-            this.reset();
-            
-            // In a real app, you would refresh the history section or add the new entry
-        });
-    </script> --}}
+ 
 </body>
 </html>
 @include('user.footer')

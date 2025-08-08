@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-class Paymentinformation extends Model
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+class PaymentInformation extends Model
 {
-    use HasFactory;
+    
+  use HasFactory;
 
+   protected $table = 'payment_informations'; // ✅ fixes the mismatch
     protected $fillable = [
     'user_id',
     'full_legal_name',
@@ -31,3 +32,5 @@ class Paymentinformation extends Model
         return $this->belongsTo(User::class);
     }
 }
+
+

@@ -3,10 +3,12 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\User\PaymentInformationController;
 use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\EscrowController;
+use App\Http\Controllers\User\PaymentInformationController;
+use App\Http\Controllers\User\PaymentProofController;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -61,6 +63,10 @@ Route::prefix('user')->as('user.')->middleware('auth')->group(function () {
     //payment information
     Route::post('/payment-information', [PaymentInformationController::class, 'store'])->name('payment.information');
     
+
+    Route::post('/upload-payment-proof', [PaymentProofController::class, 'store'])->name('payment-proof.store');
+    
+
 });
 
 

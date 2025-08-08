@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 use App\Models\Deposit;
+use App\Models\Escrow;
 use App\Models\LoanApplication;;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -44,8 +45,10 @@ public function BankInformation(){
 }
 
 public function PayOption(){
-
-  return view('user.pay-option');
+ 
+  $escrow = Escrow::where('user_id', Auth::id())->first();
+    return view('user.pay-option', compact('escrow'));
+  
 }
 
 

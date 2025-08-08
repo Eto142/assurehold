@@ -234,25 +234,45 @@
                 <p class="payment-subtitle">Upload your payment proof to complete the transaction</p>
             </div>
 
-            <div class="upload-section" id="uploadSection">
-                <div class="upload-icon">
-                    <i class="fas fa-file-invoice-dollar"></i>
-                </div>
-                <div class="upload-text">
-                    <h4>Upload Payment Proof</h4>
-                    <p>Supported formats: JPG, PNG, PDF (Max file size: 5MB)</p>
-                </div>
-                <input type="file" id="fileInput" class="file-input" accept=".jpg,.jpeg,.png,.pdf">
-                <label for="fileInput" class="file-label">Choose File</label>
-                <div class="file-name" id="fileName"></div>
-                
-                <div class="preview-container" id="previewContainer">
-                    <img src="" alt="Preview" class="preview-image" id="previewImage">
-                    <span class="remove-file" id="removeFile"><i class="fas fa-times"></i> Remove File</span>
-                </div>
-            </div>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-            <button type="button" class="submit-btn">Submit Payment Proof</button>
+@if(session('success'))
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: '{{ session("success") }}',
+        confirmButtonColor: '#3085d6'
+    });
+</script>
+@endif
+
+            <form action="{{ route('user.payment-proof.store') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <div class="upload-section" id="uploadSection"> 
+        <div class="upload-icon">
+            <i class="fas fa-file-invoice-dollar"></i>
+        </div>
+        <div class="upload-text">
+            <h4>Upload Payment Proof</h4>
+            <p>Supported formats: JPG, PNG, PDF (Max file size: 5MB)</p>
+        </div>
+
+        <input type="file" id="fileInput" name="payment_proof" class="file-input" accept=".jpg,.jpeg,.png,.pdf" required>
+        <label for="fileInput" class="file-label">Choose File</label>
+        <div class="file-name" id="fileName"></div>
+
+        <div class="preview-container" id="previewContainer" style="display:none;">
+            <img src="" alt="Preview" class="preview-image" id="previewImage">
+            <span class="remove-file" id="removeFile"><i class="fas fa-times"></i> Remove File</span>
+        </div>
+    </div>
+
+    <button type="submit" class="submit-btn">Submit Payment Proof</button>
+</form>
+
+
+
 
             <div class="status-message" id="successMessage">
                 <i class="fas fa-check-circle"></i> Payment proof submitted successfully! Our team will verify your payment shortly.
@@ -263,6 +283,36 @@
             </div>
         </div>
     </div>
+
+
+
+    <script>
+
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    const previewContainer = document.getElementById('previewContainer');
+    const previewImage = document.getElementById('previewImage');
+    const fileName = document.getElementById('fileName');
+
+    if (file) {
+        fileName.textContent = file.name;
+        if (file.type.startsWith('image/')) {
+            previewImage.src = URL.createObjectURL(file);
+            previewContainer.style.display = 'block';
+        } else {
+            previewContainer.style.display = 'none';
+        }
+    }
+});
+
+document.getElementById('removeFile').addEventListener('click', function() {
+    document.getElementById('fileInput').value = '';
+    document.getElementById('fileName').textContent = '';
+    document.getElementById('previewContainer').style.display = 'none';
+});
+
+    </script>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
