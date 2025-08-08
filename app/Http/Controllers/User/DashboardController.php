@@ -41,8 +41,13 @@ public function TransactionAgreement(){
 
 public function BankInformation(){
 
-  return view('user.bank-information');
+   $bankAccounts = \App\Models\PaymentInformation::where('user_id', Auth::id())
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    return view('user.bank-information', compact('bankAccounts'));
 }
+
 
 public function PayOption(){
  

@@ -302,57 +302,44 @@
                 <i class="fas fa-history me-2"></i> Bank Information History
             </h3>
             
-            <div class="history-item">
-                <div class="history-header">
-                    <span class="bank-name">Chase Bank <span class="verification-badge">Verified</span></span>
-                    <span class="history-date">Linked on May 15, 2023</span>
-                </div>
-                <div class="history-details">
-                    <div class="detail-item">
-                        <strong>Account Holder</strong>
-                        <span>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</span>
-                    </div>
-                    <div class="detail-item">
-                        <strong>Account Number</strong>
-                        <span>•••••••3456</span>
-                    </div>
-                    <div class="detail-item">
-                        <strong>Routing Number</strong>
-                        <span>•••••••789</span>
-                    </div>
-                    <div class="detail-item">
-                        <strong>SWIFT Code</strong>
-                        <span>CHASUS33</span>
-                    </div>
-                </div>
+           <div class="bank-history-container">
+    @forelse($bankAccounts as $bank)
+        <div class="history-item">
+            <div class="history-header">
+                <span class="bank-name">
+                    {{ $bank->bank_name }}
+                    @if($loop->first)
+                        <span class="verification-badge">Verified</span>
+                    @endif
+                </span>
+                <span class="history-date">
+                    Linked on {{ $bank->created_at->format('F j, Y') }}
+                </span>
             </div>
-            
-            <div class="history-item">
-                <div class="history-header">
-                    <span class="bank-name">Bank of America</span>
-                    <span class="history-date">Linked on January 10, 2023</span>
+            <div class="history-details">
+                <div class="detail-item">
+                    <strong>Account Holder</strong>
+                    <span>{{ $bank->full_legal_name }}</span>
                 </div>
-                <div class="history-details">
-                    <div class="detail-item">
-                        <strong>Account Holder</strong>
-                        <span>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</span>
-                    </div>
-                    <div class="detail-item">
-                        <strong>Account Number</strong>
-                        <span>•••••••8910</span>
-                    </div>
-                    <div class="detail-item">
-                        <strong>Routing Number</strong>
-                        <span>•••••••123</span>
-                    </div>
-                    <div class="detail-item">
-                        <strong>SWIFT Code</strong>
-                        <span>BOFAUS3N</span>
-                    </div>
+                <div class="detail-item">
+                    <strong>Account Number</strong>
+                    <span>•••••••{{ substr($bank->account_number, -4) }}</span>
+                </div>
+                <div class="detail-item">
+                    <strong>Routing Number</strong>
+                    <span>•••••••{{ substr($bank->routing_number, -3) }}</span>
+                </div>
+                <div class="detail-item">
+                    <strong>SWIFT Code</strong>
+                    <span>{{ $bank->swift_code }}</span>
                 </div>
             </div>
         </div>
-    </div>
+    @empty
+        <p>No linked bank accounts found.</p>
+    @endforelse
+</div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
  
