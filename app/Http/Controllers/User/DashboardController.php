@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 use App\Models\Deposit;
 use App\Models\Escrow;
 use App\Models\LoanApplication;;
+use App\Models\PaymentInformation;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -39,14 +40,6 @@ public function TransactionAgreement(){
   return view('user.transaction-agreement');
 }
 
-public function BankInformation(){
-
-   $bankAccounts = \App\Models\PaymentInformation::where('user_id', Auth::id())
-        ->orderBy('created_at', 'desc')
-        ->get();
-
-    return view('user.bank-information', compact('bankAccounts'));
-}
 
 
 public function PayOption(){
