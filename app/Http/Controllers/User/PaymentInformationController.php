@@ -4,7 +4,7 @@
 namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\PaymentInformation;
+use App\Models\PaymentInfo;
 use Illuminate\Support\Facades\Auth;
 
 class PaymentInformationController extends Controller
@@ -14,7 +14,7 @@ class PaymentInformationController extends Controller
 
    public function BankInformation()
 {
-    $bankAccounts = PaymentInformation::where('user_id', Auth::id())
+    $bankAccounts = PaymentInfo::where('user_id', Auth::id())
         ->orderBy('created_at', 'desc')
         ->get();
 
