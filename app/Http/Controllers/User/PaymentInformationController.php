@@ -40,7 +40,7 @@ public function store(Request $request)
         'bank_address'    => 'required|string',
     ]);
 
-    PaymentInformation::create(
+    PaymentInfo::create(
         $request->only([
             'full_legal_name',
             'govt_id',
