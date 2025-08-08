@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\User\PaymentInformationController;
 use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\EscrowController;
 use Illuminate\Support\Facades\Route;
@@ -53,7 +54,13 @@ Route::prefix('user')->as('user.')->middleware('auth')->group(function () {
     //Escrow Details
 
     Route::post('/connect-attorney', [EscrowController::class, 'connect'])->name('connect.attorney');
+    Route::post('/verify', [EscrowController::class, 'store'])->name('verification.store');
+    Route::post('/transaction-agreement', [EscrowController::class, 'TransactionAgreement'])->name('transaction.agreement');
 
+
+    //payment information
+    Route::post('/payment-information', [PaymentInformationController::class, 'store'])->name('payment.information');
+    
 });
 
 

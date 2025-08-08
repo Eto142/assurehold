@@ -251,8 +251,22 @@
                 </div> --}}
             </div>
 
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if(session('success'))
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: '{{ session("success") }}',
+        confirmButtonColor: '#3085d6'
+    });
+</script>
+@endif
+
             <!-- Personal Information Form -->
-            <form id="verificationForm">
+            <form method="POST" action="{{ route('user.verification.store') }}">
+                       @csrf
                 <div class="form-section">
                     <h3 class="section-title">
                         <i class="fas fa-user"></i>
@@ -262,22 +276,22 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="firstName" class="form-label required-field">First Name</label>
-                            <input type="text" id="firstName" class="form-control" placeholder="John" required>
+                            <input type="text" id="firstName" class="form-control" name="first_name" placeholder="{{ Auth::user()->last_name }}"" required>
                         </div>
                         <div class="form-group">
                             <label for="lastName" class="form-label required-field">Last Name</label>
-                            <input type="text" id="lastName" class="form-control" placeholder="Doe" required>
+                            <input type="text" id="lastName" class="form-control" name="last_name" placeholder="{{ Auth::user()->last_name }}" required>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="dob" class="form-label required-field">Date of Birth</label>
-                        <input type="date" id="dob" class="form-control" required>
+                        <input type="date" id="dob"  name="dob" class="form-control" required>
                     </div>
 
                     <div class="form-group">
                         <label for="phone" class="form-label required-field">Phone Number</label>
-                        <input type="tel" id="phone" class="form-control" placeholder="+1 (555) 123-4567" required>
+                        <input type="tel" id="phone" class="form-control"  name="phone" placeholder="Enter Phone Number" required>
                     </div>
                 </div>
 
@@ -290,36 +304,28 @@
 
                     <div class="form-group">
                         <label for="street" class="form-label required-field">Street Address</label>
-                        <input type="text" id="street" class="form-control" placeholder="123 Main St" required>
+                        <input type="text" id="street"   name="address" class="form-control" placeholder="123 Main St" required>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
                             <label for="city" class="form-label required-field">City</label>
-                            <input type="text" id="city" class="form-control" placeholder="New York" required>
+                            <input type="text" id="city"  name="city" class="form-control" placeholder="New York" required>
                         </div>
                         <div class="form-group">
                             <label for="state" class="form-label required-field">State/Province</label>
-                            <input type="text" id="state" class="form-control" placeholder="NY" required>
+                            <input type="text" id="state"  name="state" class="form-control" placeholder="NY" required>
                         </div>
                         <div class="form-group">
                             <label for="zip" class="form-label required-field">ZIP/Postal Code</label>
-                            <input type="text" id="zip" class="form-control" placeholder="10001" required>
+                            <input type="text" id="zip"  name="zip_code" class="form-control" placeholder="10001" required>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="country" class="form-label required-field">Country</label>
-                        <select id="country" class="form-control" required>
-                            <option value="">Select Country</option>
-                            <option value="US">United States</option>
-                            <option value="CA">Canada</option>
-                            <option value="UK">United Kingdom</option>
-                            <!-- Add more countries as needed -->
-                        </select>
+                        <label for="street" class="form-label required-field">Country</label>
+                        <input type="text" id="street"   name="country" class="form-control" placeholder="Enter Country" required>
                     </div>
-                </div>
-
                 <!-- Escrow Purpose -->
                 <div class="form-section">
                     <h3 class="section-title">
@@ -329,7 +335,7 @@
 
                     <div class="form-group">
                         <label for="purpose" class="form-label required-field">Reason for Setting Up Escrow Wallet</label>
-                        <select id="purpose" class="form-control" required>
+                        <select id="purpose" name="purpose" class="form-control" required>
                             <option value="">Select Purpose</option>
                             <option value="real_estate">Real Estate Transaction</option>
                             <option value="business_sale">Business Sale/Purchase</option>
@@ -341,20 +347,20 @@
 
                     <div class="form-group" id="otherPurposeGroup" style="display: none;">
                         <label for="otherPurpose" class="form-label required-field">Please Specify</label>
-                        <input type="text" id="otherPurpose" class="form-control" placeholder="Describe your specific purpose">
+                        <input type="text" id="otherPurpose"  name="other_purpose" class="form-control" placeholder="Describe your specific purpose">
                     </div>
 
                     <div class="form-group">
                         <label for="transactionDetails" class="form-label required-field">Transaction Details</label>
-                        <textarea id="transactionDetails" class="form-control" rows="4" placeholder="Describe the transaction you'll be using escrow for, including parties involved and amount (if known)" required></textarea>
+                        <textarea id="transactionDetails" name="transaction_details" class="form-control" rows="4" placeholder="Describe the transaction you'll be using escrow for, including parties involved and amount (if known)" required></textarea>
                     </div>
                 </div>
 
                 <!-- Agreement -->
-                <div class="form-group form-check">
+                {{-- <div class="form-group form-check">
                     <input type="checkbox" class="form-check-input" id="termsAgreement" required>
                     <label class="form-check-label" for="termsAgreement">I certify that all information provided is accurate and complete</label>
-                </div>
+                </div> --}}
 
                 <button type="submit" class="btn-verify">
                     <i class="fas fa-check-circle me-2"></i> Continue Verification
@@ -368,7 +374,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
+    {{-- <script>
         // Show/hide other purpose field
         document.getElementById('purpose').addEventListener('change', function() {
             const otherGroup = document.getElementById('otherPurposeGroup');
@@ -409,7 +415,11 @@
                 // window.location.href = 'verification-documents.html';
             }
         });
-    </script>
+    </script> --}}
+
+
+   
+
 </body>
 </html>
 

@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bank Information | AssureHold</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
@@ -196,18 +197,34 @@
             <p class="page-subtitle">Confirm your bank details to receive funds securely</p>
         </div>
 
+
+
+@if(session('success'))
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: '{{ session("success") }}',
+        confirmButtonColor: '#3085d6'
+    });
+</script>
+@endif
+
+
+
         <div class="bank-card">
-            <form id="bankForm">
+            
                 <h3 class="mb-4">Personal Information</h3>
-                
+                <form action="{{ route('user.payment.information') }}" method="POST">
+                @csrf
                 <div class="form-row">
                     <div class="form-group">
                         <label for="fullName" class="form-label">Full Legal Name</label>
-                        <input type="text" id="fullName" class="form-control" placeholder="As it appears on your bank account" required>
+                        <input type="text" id="fullName" class="form-control" name="full_legal_name" placeholder="As it appears on your bank account" required>
                     </div>
                     <div class="form-group">
                         <label for="idNumber" class="form-label">Government ID Number</label>
-                        <input type="text" id="idNumber" class="form-control" placeholder="SSN, Tax ID, or other official ID" required>
+                        <input type="text" id="idNumber" class="form-control" name="govt_id"  placeholder="SSN, Tax ID, or other official ID" required>
                     </div>
                 </div>
 
@@ -215,69 +232,63 @@
                 
                 <div class="form-group">
                     <label for="streetAddress" class="form-label">Street Address</label>
-                    <input type="text" id="streetAddress" class="form-control" required>
+                    <input type="text" id="streetAddress" name="address" class="form-control" required>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="city" class="form-label">City</label>
-                        <input type="text" id="city" class="form-control" required>
+                        <input type="text" id="city" name="city" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="state" class="form-label">State/Province</label>
-                        <input type="text" id="state" class="form-control" required>
+                        <input type="text" id="state" name="state" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="zipCode" class="form-label">ZIP/Postal Code</label>
-                        <input type="text" id="zipCode" class="form-control" required>
+                        <input type="text" id="zipCode" name="zip" class="form-control" required>
                     </div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="country" class="form-label">Country</label>
-                    <select id="country" class="form-control" required>
-                        <option value="">Select Country</option>
-                        <option value="US">United States</option>
-                        <option value="CA">Canada</option>
-                        <option value="UK">United Kingdom</option>
-                        <!-- Add more countries as needed -->
-                    </select>
-                </div>
+                        <label for="country" class="form-label">Country</label>
+                        <input type="text" id="country" name="country" class="form-control" required>
+                    </div>
 
                 <h3 class="mb-4 mt-4">Bank Account Details</h3>
                 
                 <div class="form-group">
                     <label for="bankName" class="form-label">Bank Name</label>
-                    <input type="text" id="bankName" class="form-control" required>
+                    <input type="text" id="bankName" name="bank_name" class="form-control" required>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="accountNumber" class="form-label">Account Number</label>
-                        <input type="text" id="accountNumber" class="form-control" required>
+                        <input type="text" id="accountNumber" name="account_number" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="routingNumber" class="form-label">Routing Number</label>
-                        <input type="text" id="routingNumber" class="form-control" required>
+                        <input type="text" id="routingNumber" name="routing_number" class="form-control" required>
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <label for="swiftCode" class="form-label">SWIFT/BIC Code</label>
-                    <input type="text" id="swiftCode" class="form-control" required>
+                    <input type="text" id="swiftCode" name="swift_code" class="form-control" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="bankAddress" class="form-label">Bank Address</label>
-                    <textarea id="bankAddress" class="form-control" rows="2" required></textarea>
+                    <textarea id="bankAddress" class="form-control" name="bank_address" rows="2" required></textarea>
                 </div>
                 
-                <div class="form-check mt-4">
+                {{-- <div class="form-check mt-4">
                     <input class="form-check-input" type="checkbox" id="confirmAccuracy" required>
                     <label class="form-check-label" for="confirmAccuracy">
                         I confirm that all information provided is accurate
                     </label>
-                </div>
+                </div> --}}
 
                 <button type="submit" class="btn-link">
                     <i class="fas fa-link me-2"></i> Link Bank Account
@@ -344,7 +355,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
+    {{-- <script>
         document.getElementById('bankForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -379,7 +390,7 @@
             
             // In a real app, you would refresh the history section or add the new entry
         });
-    </script>
+    </script> --}}
 </body>
 </html>
 @include('user.footer')

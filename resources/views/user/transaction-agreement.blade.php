@@ -1,67 +1,173 @@
 @include('user.header')
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transaction Agreement | AssureHold</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if(session('success'))
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: '{{ session("success") }}',
+        confirmButtonColor: '#3085d6'
+    });
+</script>
+@endif
+
+  <!-- Main Content -->
+            <main class="main-content">
+                <div class="connect-container">
+                    <h1 class="connect-title">Transaction Agreement</h1>
+                    <p class="connect-subtitle">
+Review and sign your escrow agreement to proceed with the transaction</p>
+                    
+
+                   <form method="POST" action="{{ route('user.transaction.agreement') }}">
+                       @csrf
+                       <input type="hidden" name="email" value="{{ Auth::user()->email }}">
+                       <button type="submit" class="connect-btn">
+                           <i class="fas fa-file-signature agreement-icon"></i>
+                           Request Transaction Agreement
+                       </button>
+                   </form>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Connect Modal -->
+    <div class="modal fade" id="connectModal" tabindex="-1" aria-labelledby="connectModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="connectModalLabel">Contact Escrow Attorney</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="attorneyContactForm">
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Subject</label>
+                            <input type="text" class="form-control" id="subject" placeholder="Regarding my escrow transaction" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Your Message</label>
+                            <textarea class="form-control" id="message" rows="5" placeholder="Describe your legal questions or concerns..." required></textarea>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, var(--gold-primary), var(--gold-secondary)); border: none; padding: 0.75rem;">
+                                <i class="fas fa-paper-plane me-2"></i> Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="success-message">
+                        <div class="success-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3>Message Sent Successfully!</h3>
+                        <p>Your message has been sent to our escrow attorney. You will receive a response at your registered email address within 24 hours.</p>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   <style>
+        /* Your existing CSS variables and styles */
         :root {
             --gold-primary: #B8860B;
             --gold-secondary: #DAA520;
+            --gold-light: #F4E4BC;
             --black-primary: #121826;
+            --black-secondary: #1E293B;
             --white-primary: #FFFFFF;
             --gray-light: #f8f9fa;
             --gray-medium: #E2E8F0;
             --gray-dark: #64748B;
+            --gray-text: #64748B;
             --success-color: #10B981;
+            --warning-color: #F59E0B;
+            --danger-color: #EF4444;
+            --info-color: #3B82F6;
+            --sidebar-width: 280px;
+            --header-height: 80px;
+            --transition-speed: 0.3s;
             --border-radius: 12px;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --elevation-1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            --elevation-2: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+            --elevation-3: 0 10px 25px rgba(0,0,0,0.1), 0 5px 10px rgba(0,0,0,0.05);
         }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--gray-light);
-        }
-
-        .agreement-container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 0 1.5rem;
-        }
-
-        .agreement-card {
-            background: var(--white-primary);
-            border-radius: var(--border-radius);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        /* Your existing header and sidebar styles */
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
             padding: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .page-header {
-            margin-bottom: 2rem;
+            min-height: calc(100vh - var(--header-height));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
         }
 
-        .page-title {
+        .connect-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .connect-title {
             font-size: 2rem;
             font-weight: 600;
+            margin-bottom: 1rem;
             color: var(--black-primary);
-            margin-bottom: 0.5rem;
             background: linear-gradient(135deg, var(--black-primary), var(--gold-primary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .page-subtitle {
-            color: var(--gray-dark);
-            font-size: 1rem;
+        .connect-subtitle {
+            color: var(--gray-text);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            max-width: 500px;
         }
 
-        .agreement-btn {
+        /* Fancy Connect Button */
+        .connect-btn {
             background: linear-gradient(135deg, var(--gold-primary), var(--gold-secondary));
             color: white;
             border: none;
@@ -79,19 +185,18 @@
             display: inline-flex;
             align-items: center;
             gap: 12px;
-            margin: 1rem auto;
         }
 
-        .agreement-btn:hover {
+        .connect-btn:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 30px rgba(184, 134, 11, 0.4);
         }
 
-        .agreement-btn:active {
+        .connect-btn:active {
             transform: translateY(-2px);
         }
 
-        .agreement-btn::before {
+        .connect-btn::before {
             content: '';
             position: absolute;
             top: 0;
@@ -102,210 +207,80 @@
             transition: 0.5s;
         }
 
-        .agreement-btn:hover::before {
+        .connect-btn:hover::before {
             left: 100%;
         }
 
-        .agreement-icon {
+        .connect-icon {
             font-size: 1.5rem;
             transition: all 0.3s ease;
         }
 
-        .agreement-btn:hover .agreement-icon {
+        .connect-btn:hover .connect-icon {
             transform: rotate(360deg);
         }
 
-        .agreement-content {
-            background: var(--white-primary);
-            border: 1px solid var(--gray-medium);
+        /* Modal Styles */
+        .modal-content {
             border-radius: var(--border-radius);
+            border: none;
+            box-shadow: var(--elevation-3);
+        }
+
+        .modal-header {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .modal-title {
+            font-weight: 600;
+            color: var(--black-primary);
+        }
+
+        .modal-body {
             padding: 2rem;
-            margin: 2rem 0;
-            max-height: 400px;
-            overflow-y: auto;
         }
 
-        .agreement-footer {
-            text-align: center;
-            margin-top: 2rem;
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--black-primary);
         }
 
-        .form-check-input:checked {
-            background-color: var(--gold-primary);
+        .form-control {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--gray-medium);
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
             border-color: var(--gold-primary);
+            box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.2);
         }
 
-        @media (max-width: 768px) {
-            .agreement-btn {
-                padding: 1rem 1.5rem;
-                font-size: 1rem;
-            }
-            
-            .agreement-content {
-                padding: 1rem;
-            }
+        textarea.form-control {
+            min-height: 150px;
+        }
+
+        .success-message {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: var(--success-color);
+            margin-bottom: 1.5rem;
+            animation: bounce 1s ease infinite alternate;
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
         }
     </style>
-</head>
-<body>
-    <div class="agreement-container">
-        <div class="page-header">
-            <h1 class="page-title">Transaction Agreement</h1>
-            <p class="page-subtitle">Review and sign your escrow agreement to proceed with the transaction</p>
-        </div>
 
-        <div class="agreement-card">
-            <div class="text-center">
-               <form method="POST" action="{{ route('user.connect.attorney') }}">
-                       @csrf
-                       <input type="hidden" name="email" value="{{ Auth::user()->email }}">
-                <button type="button" class="agreement-btn">
-                    <i class="fas fa-file-signature agreement-icon"></i>
-                    Review Agreement
-                </button>
-            </form>
-            </div>
+    
 
-            <!-- Agreement Content (initially hidden) -->
-            <div class="agreement-content" id="agreementContent" style="display: none;">
-                <h4>ESCROW AGREEMENT</h4>
-                <p><strong>Agreement Date:</strong> <span id="agreementDate"></span></p>
-                <p><strong>Transaction ID:</strong> <span id="transactionId">ESC-{{ date('Y') }}-{{ str_pad(mt_rand(1, 999999), 6, '0', STR_PAD_LEFT) }}</span></p>
-                
-                <h5 class="mt-4">1. PARTIES</h5>
-                <p>This Escrow Agreement ("Agreement") is made between:</p>
-                <p><strong>Buyer:</strong> {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</p>
-                <p><strong>Seller:</strong> [Seller's Name]</p>
-                <p><strong>Escrow Agent:</strong> AssureHold Escrow Services</p>
-                
-                <h5 class="mt-4">2. ESCROW DETAILS</h5>
-                <p>The parties agree to deposit the sum of <strong>$[Amount]</strong> with the Escrow Agent to be held in escrow pursuant to the terms of this Agreement.</p>
-                
-                <h5 class="mt-4">3. TERMS & CONDITIONS</h5>
-                <p>1. The Escrow Agent shall hold the funds until all conditions of the underlying transaction are satisfied.</p>
-                <p>2. Funds will be released to the Seller upon Buyer's written approval or upon fulfillment of all contractual obligations.</p>
-                <p>3. In case of dispute, funds will be held until resolution is reached or as directed by a court of competent jurisdiction.</p>
-                
-                <h5 class="mt-4">4. FEES</h5>
-                <p>The Escrow Agent's fee of <strong>$[Fee Amount]</strong> will be deducted from the escrow funds upon successful completion of the transaction.</p>
-                
-                <div class="form-check mt-4">
-                    <input class="form-check-input" type="checkbox" id="agreeTerms" required>
-                    <label class="form-check-label" for="agreeTerms">
-                        I have read and agree to the terms of this Escrow Agreement
-                    </label>
-                </div>
-                
-                <div class="text-center mt-4">
-                    <button type="button" class="btn btn-primary" id="signAgreementBtn" style="background: linear-gradient(135deg, var(--gold-primary), var(--gold-secondary)); border: none; padding: 0.75rem 2rem; display: none;">
-                        <i class="fas fa-signature me-2"></i> Sign Agreement
-                    </button>
-                </div>
-            </div>
-            
-            <div class="agreement-footer">
-                <p><small>By signing, you acknowledge this agreement is legally binding.</small></p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Success Modal -->
-    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body text-center p-4">
-                    <div class="success-icon mb-3" style="font-size: 4rem; color: var(--success-color);">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <h3>Agreement Signed Successfully!</h3>
-                    <p class="mb-4">Your transaction agreement has been executed. A copy has been sent to your email.</p>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Set current date
-        document.getElementById('agreementDate').textContent = new Date().toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
-        });
-
-        // Show agreement when button is clicked
-        document.getElementById('reviewAgreementBtn').addEventListener('click', function() {
-            const content = document.getElementById('agreementContent');
-            const btn = document.getElementById('reviewAgreementBtn');
-            
-            if (content.style.display === 'none') {
-                content.style.display = 'block';
-                btn.innerHTML = '<i class="fas fa-eye-slash agreement-icon"></i> Hide Agreement';
-            } else {
-                content.style.display = 'none';
-                btn.innerHTML = '<i class="fas fa-file-signature agreement-icon"></i> Review Agreement';
-            }
-        });
-
-        // Enable sign button when terms are agreed
-        document.getElementById('agreeTerms').addEventListener('change', function() {
-            document.getElementById('signAgreementBtn').style.display = this.checked ? 'inline-block' : 'none';
-        });
-
-        // Sign agreement handler
-        document.getElementById('signAgreementBtn').addEventListener('click', function() {
-            // In a real application, you would:
-            // 1. Save the signed agreement to your database
-            // 2. Send email notification to admin@assurehold.com
-            // 3. Send confirmation to user
-            
-            // Sample data to be sent
-            const agreementData = {
-                transactionId: document.getElementById('transactionId').textContent,
-                userId: "{{ Auth::user()->id }}",
-                userName: "{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}",
-                userEmail: "{{ Auth::user()->email }}",
-                agreementDate: document.getElementById('agreementDate').textContent,
-                ipAddress: "<?php echo $_SERVER['REMOTE_ADDR']; ?>"
-            };
-            
-            console.log('Agreement signed:', agreementData);
-            
-            // Here you would typically make an AJAX call to your backend
-            // Example:
-            /*
-            fetch('/api/agreement/sign', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify(agreementData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Show success modal
-                const successModal = new bootstrap.Modal(document.getElementById('successModal'));
-                successModal.show();
-            });
-            */
-            
-            // For demo purposes, we'll just show the success modal
-            const successModal = new bootstrap.Modal(document.getElementById('successModal'));
-            successModal.show();
-            
-            // Send email notification (this would be server-side in real app)
-            const emailData = {
-                to: 'admin@assurehold.com',
-                subject: `New Agreement Signed - ${agreementData.transactionId}`,
-                message: `User ${agreementData.userName} (${agreementData.userEmail}) has signed the escrow agreement for transaction ${agreementData.transactionId}.`
-            };
-            
-            console.log('Email to admin:', emailData);
-        });
-    </script>
-</body>
-</html>
-
-@include('user.footer')
+    @include('user.footer')
