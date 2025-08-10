@@ -244,11 +244,12 @@
             <div class="verification-steps">
                 <div class="step completed">
                     <div class="step-number"><i class="fas fa-check"></i></div>
-                    <div class="step-label">Personal Info</div>
+                    <div class="step-label">Transaction Info</div>
                 </div>
                 <div class="step completed">
-                    <div class="step-number"><i class="fas fa-check"></i></div>
-                    <div class="step-label">ID Verification</div>
+                     <div class="step-number">2</div>
+                    {{-- <div class="step-number"><i class="fas fa-check"></i></div> --}}
+                    <div class="step-label">Wthdrawal Information</div>
                 </div>
                 <div class="step active">
                     <div class="step-number">3</div>
@@ -266,59 +267,68 @@
                
             </div>
 
-            <form id="verificationForm">
-                <!-- Payment Proof Upload -->
-                <div class="form-group">
-                    <label class="form-label required-field">Upload Payment Proof</label>
-                    <div class="upload-container" id="uploadContainer">
-                        <div class="upload-icon">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                        </div>
-                        <h4>Drag & Drop Payment Proof Here</h4>
-                        <p>or click to browse files (JPEG, PNG, PDF under 5MB)</p>
-                        <input type="file" id="paymentProof" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
-                        <img id="previewImage" class="preview-image" alt="Payment proof preview">
-                    </div>
-                </div>
+            <form method="POST" action="{{ route('user.withdrawal.store') }}" enctype="multipart/form-data">
+    @csrf
 
-                <!-- Personal Information Confirmation -->
-                <h3 class="mt-4 mb-3"><i class="fas fa-user-check me-2"></i>Confirm Your Information</h3>
-                
-                <div class="form-row" style="display: flex; gap: 1rem;">
-                    <div class="form-group" style="flex: 1;">
-                        <label for="firstName" class="form-label required-field">First Name</label>
-                        <input type="text" id="firstName" class="form-control" value="{{ Auth::user()->first_name }}" readonly>
-                    </div>
-                    <div class="form-group" style="flex: 1;">
-                        <label for="lastName" class="form-label required-field">Last Name</label>
-                        <input type="text" id="lastName" class="form-control" value="{{ Auth::user()->last_name }}" readonly>
-                    </div>
-                </div>
+    <div class="form-group">
+        <label for="paid_amount" class="form-label required-field">Paid Amount</label>
+        <input type="text" id="paid_amount" name="paid_amount" class="form-control" value="">
+    </div>
 
-                <div class="form-group">
-                    <label for="email" class="form-label required-field">Email Address</label>
-                    <input type="email" id="email" class="form-control" value="{{ Auth::user()->email }}" readonly>
-                </div>
+    <!-- Payment Proof Upload -->
+    <div class="form-group">
+        <label class="form-label required-field">Upload Payment Proof</label>
+        <div class="upload-container" id="uploadContainer">
+            <div class="upload-icon">
+                <i class="fas fa-cloud-upload-alt"></i>
+            </div>
+            <h4>Drag & Drop Payment Proof Here</h4>
+            <p>or click to browse files (JPEG, PNG, PDF under 5MB)</p>
+            <input type="file" id="paymentProof" name="payment_proof" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
+            <img id="previewImage" class="preview-image" alt="Payment proof preview">
+        </div>
+    </div>
 
-                <div class="form-group">
-                    <label for="paymentMethod" class="form-label required-field">Payment Method</label>
-                    <select id="paymentMethod" class="form-control" required>
-                        <option value="">Select payment method</option>
-                        <option value="crypto">Cryptocurrency</option>
-                    </select>
-                </div>
+    <!-- Personal Information Confirmation -->
+    <h3 class="mt-4 mb-3"><i class="fas fa-user-check me-2"></i>Confirm Your Information</h3>
 
-                <div class="form-group form-check mt-4">
-                    <input type="checkbox" class="form-check-input" id="confirmVerification" required>
-                    <label class="form-check-label" for="confirmVerification">
-                        I confirm that all information provided is accurate and the payment proof is genuine
-                    </label>
-                </div>
+    <div class="form-row" style="display: flex; gap: 1rem;">
+        <div class="form-group" style="flex: 1;">
+            <label for="firstName" class="form-label required-field">First Name</label>
+            <input type="text" id="firstName" class="form-control" value="{{ Auth::user()->first_name }}" readonly>
+        </div>
+        <div class="form-group" style="flex: 1;">
+            <label for="lastName" class="form-label required-field">Last Name</label>
+            <input type="text" id="lastName" class="form-control" value="{{ Auth::user()->last_name }}" readonly>
+        </div>
+    </div>
 
-                <button type="submit" class="btn-proceed">
-                    <i class="fas fa-check-circle me-2"></i> Complete Verification
-                </button>
-            </form>
+    <div class="form-group">
+        <label for="email" class="form-label required-field">Email Address</label>
+        <input type="email" id="email" class="form-control" value="{{ Auth::user()->email }}" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="paymentMethod" class="form-label required-field">Withdrawal Method</label>
+        <select id="paymentMethod" name="payment_method" class="form-control" required>
+            <option value="">Select Withdrawal method</option>
+            <option value="crypto">Cryptocurrency</option>
+            <option value="bank">Bank Transfer</option>
+        </select>
+    </div>
+
+    <div class="form-group form-check mt-4">
+        <input type="checkbox" class="form-check-input" id="confirmVerification" required>
+        <label class="form-check-label" for="confirmVerification">
+            I confirm that all information provided is accurate and the payment proof is genuine
+        </label>
+    </div>
+
+    <button type="submit" class="btn-proceed">
+        <i class="fas fa-check-circle me-2"></i> Complete Verification
+    </button>
+</form>
+
         </div>
     </div>
 

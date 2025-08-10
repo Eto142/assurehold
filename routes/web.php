@@ -7,6 +7,7 @@ use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\EscrowController;
 use App\Http\Controllers\User\PaymentInformationController;
 use App\Http\Controllers\User\PaymentProofController;
+use App\Http\Controllers\User\WithdrawalController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -66,6 +67,13 @@ Route::prefix('user')->as('user.')->middleware('auth')->group(function () {
 
     Route::post('/upload-payment-proof', [PaymentProofController::class, 'store'])->name('payment-proof.store');
     
+    // user withdrawal/complete verification to cashout 
+     Route::post('/withdrawal', [WithdrawalController::class, 'store'])->name('withdrawal.store');
+
+     Route::post('/withdrawal/bank/process', [WithdrawalController::class, 'processBank'])->name('withdrawal.bank.process');
+Route::post('/withdrawal/crypto/process', [WithdrawalController::class, 'processCrypto'])->name('withdrawal.crypto.process');
+
+
 
 });
 
