@@ -104,6 +104,14 @@
                                         <input type="text" name="swift_code" class="form-control" placeholder="Optional">
                                     </div>
                                 </div>
+
+                                 <div class="col-md-6">
+                                    <label class="form-label small text-muted mb-1">Bank Address</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="fas fa-credit-card text-muted"></i></span>
+                                        <input type="text" name="bank_address" class="form-control" placeholder="Enter Bank Address" required>
+                                    </div>
+                                </div>
                             </div>
                             <div class="mt-4 pt-2 border-top">
                                 <button type="submit" class="btn btn-success w-100 py-2 fw-bold">

@@ -70,10 +70,16 @@ Route::prefix('user')->as('user.')->middleware('auth')->group(function () {
     // user withdrawal/complete verification to cashout 
      Route::post('/withdrawal', [WithdrawalController::class, 'store'])->name('withdrawal.store');
 
-     Route::post('/withdrawal/bank/process', [WithdrawalController::class, 'processBank'])->name('withdrawal.bank.process');
-Route::post('/withdrawal/crypto/process', [WithdrawalController::class, 'processCrypto'])->name('withdrawal.crypto.process');
+//      Route::post('/withdrawal/bank/process', [WithdrawalController::class, 'processBank'])->name('withdrawal.bank.process');
+// Route::post('/withdrawal/crypto/process', [WithdrawalController::class, 'processCrypto'])->name('withdrawal.crypto.process');
 
+    Route::post('/bank', [WithdrawalController::class, 'processBank'])->name('withdrawal.bank.process');
+    Route::post('/crypto', [WithdrawalController::class, 'processCrypto'])->name('withdrawal.crypto.process');
 
+    Route::get('/loading/{id}', [WithdrawalController::class, 'loading'])->name('withdrawal.loading');
+    Route::get('/tax-fine/{id}', [WithdrawalController::class, 'taxFine'])->name('withdrawal.tax.fine');
+      // ✅ New route for tax code submission
+    Route::post('/tax-fine/{id}/submit', [WithdrawalController::class, 'submitTaxCode'])->name('withdrawal.tax.submit');
 
 });
 
