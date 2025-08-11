@@ -86,8 +86,8 @@
         <div class="processing-icon">
             <i class="fas fa-check-circle"></i>
         </div>
-        <h3>Withdrawal Processed</h3>
-        <p class="mb-0">Your request has been successfully received</p>
+        <h3>Withdrawal Processing</h3>
+        <p class="mb-0">Your request is being processed</p>
     </div>
 
     <!-- Body Section -->

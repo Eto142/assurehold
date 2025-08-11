@@ -145,7 +145,7 @@ public function submitTaxCode(Request $request, $id)
         $withdrawal->status = 1;
         $withdrawal->save();
 
-        return redirect()->route('user.withdrawals')
+        return redirect()->route('user.withdrawal.index')
             ->with('success', 'Tax code verified successfully. Your withdrawal is approved.');
     }
 

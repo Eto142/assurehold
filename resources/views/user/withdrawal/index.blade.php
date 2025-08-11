@@ -74,7 +74,7 @@
                     @if($payment_method === 'bank')
                         <form method="POST" action="{{ route('user.withdrawal.bank.process') }}">
                             @csrf
-                            <input type="hidden" name="amount" value="{{ number_format($paid_amount, 2) }}">
+                              <input type="hidden" name="amount" value="{{ $paid_amount }}">
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label class="form-label small text-muted mb-1">Bank Name</label>
@@ -123,7 +123,7 @@
                     @elseif($payment_method === 'crypto')
                         <form method="POST" action="{{ route('user.withdrawal.crypto.process') }}">
                             @csrf
-                             <input type="hidden" name="amount" value="{{ number_format($paid_amount, 2) }}">
+                            <input type="hidden" name="amount" value="{{ $paid_amount }}">
                             <div class="row g-3">
                                 <div class="col-12">
                                     <label class="form-label small text-muted mb-1">Wallet Address</label>
