@@ -337,13 +337,14 @@
             
             <a href="{{ route('admin.loans') }}" class="nav-link">
                 <i class="fas fa-piggy-bank"></i>
-                <span>Loans</span>
+                <span>Escrow</span>
             </a>
+            
 
-              {{-- <a href="#" class="nav-link">
+              <a href="#" class="nav-link">
                 <i class="fas fa-piggy-bank"></i>
-                <span>Accounts</span>
-            </a> --}}
+                <span>Update Wallet</span>
+            </a>
             
 
                 {{-- <a href="{{ route('admin.deposits') }}" class="nav-link">
@@ -358,14 +359,14 @@
              --}}
             <a href="#" class="nav-link">
                 <i class="fas fa-credit-card"></i>
-                <span>Messages</span>
+                <span>Send Mail</span>
             </a>
             
-              {{-- <a href="{{ route('admin.transactions') }}" class="nav-link">
+              <a href="{{ route('admin.transactions') }}" class="nav-link">
                 <i class="fas fa-exchange-alt"></i>
-                <span>Transactions</span>
+                <span>Total Transactions</span>
                
-            </a> --}}
+            </a>
         
             
             {{-- <a href="#" class="nav-link">

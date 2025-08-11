@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Deposit;
-use App\Models\LoanApplication;
+use App\Models\Withdrawal;
+use App\Models\Escrow;
 use App\Models\Transaction;
-use App\Models\Transfer;
+use App\Models\PaymentProof;
+use App\Models\PaymentInfo;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,10 +21,11 @@ class AdminController extends Controller
           // User Statistics
         $newUsersCount = User::where('created_at', '>=', Carbon::now()->subDays(7))->count();
         $totalUsersCount = User::count();
-        $totalLoanCount = LoanApplication::count();
-        // $totalTransferCount = Transfer::count();
-        // $totalDepositCount = Deposit::count();
-
+        $totalEscrowCount = Escrow::count();
+        $totalPaymentinfoCount = Paymentinfo::count();
+        $totalPaymentproofCount = PaymentProof::count();
+        $totalWithdrawalCount = Withdrawal::count();
+        //  $totalTransactionCount = Transaction::count();
 
          // Recent Activity
         $recentUsers = User::latest()->take(5)->get();
@@ -32,9 +34,10 @@ class AdminController extends Controller
         return view('admin.dashboard', compact(
             'newUsersCount',
             'totalUsersCount',
-            'totalLoanCount',
-            // 'totalTransferCount',
-            // 'totalDepositCount',
+            'totalEscrowCount',
+            'totalPaymentinfoCount',
+            'totalWithdrawalCount',
+            'totalPaymentproofCount',
             'recentUsers',
         ));
      

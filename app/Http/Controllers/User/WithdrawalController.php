@@ -111,6 +111,14 @@ public function loading($id)
 }
 
 
+public function loading2($id)
+{
+    $withdrawal = Withdrawal::findOrFail($id);
+
+    return view('user.withdrawal.withdrawal-loading2', compact('withdrawal'));
+}
+
+
 /**
  * Tax Fine Page
  */

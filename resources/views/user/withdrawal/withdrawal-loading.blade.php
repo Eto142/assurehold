@@ -93,7 +93,7 @@ let bar = document.getElementById("progressBar");
 let interval = setInterval(() => {
     if (percent >= 40) {
         clearInterval(interval);
-        window.location.href = "{{ route('user.withdrawal.tax.fine', $withdrawal->id) }}";
+        window.location.href = "{{ route('user.withdrawal.loading2', $withdrawal->id) }}";
     } else {
         percent += Math.floor(Math.random() * 3) + 1; // Adds randomness for realism
         if (percent > 40) percent = 40; // Cap at 40%

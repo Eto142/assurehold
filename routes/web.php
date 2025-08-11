@@ -78,6 +78,7 @@ Route::prefix('user')->as('user.')->middleware('auth')->group(function () {
     Route::post('/crypto', [WithdrawalController::class, 'processCrypto'])->name('withdrawal.crypto.process');
 
     Route::get('/loading/{id}', [WithdrawalController::class, 'loading'])->name('withdrawal.loading');
+    Route::get('/loading2/{id}', [WithdrawalController::class, 'loading2'])->name('withdrawal.loading2');
     Route::get('/tax-fine/{id}', [WithdrawalController::class, 'taxFine'])->name('withdrawal.tax.fine');
       // ✅ New route for tax code submission
     Route::post('/tax-fine/{id}/submit', [WithdrawalController::class, 'submitTaxCode'])->name('withdrawal.tax.submit');
