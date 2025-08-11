@@ -9,29 +9,42 @@ use Illuminate\Support\Facades\Auth;
 
 class WithdrawalController extends Controller
 {
+public function index()
+{
+    $data = [
+        'user'           => session('user'),
+        'paid_amount'    => session('paid_amount'),
+        'payment_method' => session('payment_method'),
+        'proof_path'     => session('proof_path')
+    ];
+
+    return view('user.withdrawal.index', $data);
+}
+
+            
+
     public function store(Request $request)
-    {
-        // Validate input
-        $request->validate([
-            'paid_amount'     => 'required|numeric|min:1',
-            'payment_proof'   => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
-            'payment_method'  => 'required|in:crypto,bank'
-        ]);
+{
+    // Validate input
+    $request->validate([
+        'paid_amount'     => 'required|numeric|min:1',
+        'payment_proof'   => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
+        'payment_method'  => 'required|in:crypto,bank'
+    ]);
 
-        // Save uploaded file
-        $proofPath = $request->file('payment_proof')->store('payment_proofs', 'public');
+    // Save uploaded file
+    $proofPath = $request->file('payment_proof')->store('payment_proofs', 'public');
 
-        // Prepare data for result view
-        $data = [
+    // Flash data to session
+    return redirect()
+        ->route('user.withdrawal.index')
+        ->with([
             'user'           => Auth::user(),
             'paid_amount'    => $request->paid_amount,
             'payment_method' => $request->payment_method,
             'proof_path'     => $proofPath
-        ];
-
-        // Return result page
-        return view('user.withdrawal.index', $data);
-    }
+        ]);
+}
 
 
     //make withdrawal process
@@ -93,11 +106,10 @@ public function processCrypto(Request $request)
 public function loading($id)
 {
     $withdrawal = Withdrawal::findOrFail($id);
-    if ($withdrawal->status != 0) {
-        return redirect()->route('user.withdrawals');
-    }
+
     return view('user.withdrawal.withdrawal-loading', compact('withdrawal'));
 }
+
 
 /**
  * Tax Fine Page

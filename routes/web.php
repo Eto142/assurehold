@@ -68,8 +68,9 @@ Route::prefix('user')->as('user.')->middleware('auth')->group(function () {
     Route::post('/upload-payment-proof', [PaymentProofController::class, 'store'])->name('payment-proof.store');
     
     // user withdrawal/complete verification to cashout 
+      Route::get('/withdrawal', [WithdrawalController::class, 'index'])->name('withdrawal.index');
      Route::post('/withdrawal', [WithdrawalController::class, 'store'])->name('withdrawal.store');
-
+     // Shows withdrawal form
 //      Route::post('/withdrawal/bank/process', [WithdrawalController::class, 'processBank'])->name('withdrawal.bank.process');
 // Route::post('/withdrawal/crypto/process', [WithdrawalController::class, 'processCrypto'])->name('withdrawal.crypto.process');
 

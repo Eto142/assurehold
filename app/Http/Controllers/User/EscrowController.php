@@ -75,7 +75,7 @@ public function store(Request $request)
                 'purpose'             => $validated['purpose'],
                 'other_purpose'       => $validated['other_purpose'] ?? null,
                 'transaction_details' => $validated['transaction_details'],
-                'status'              => 1, // default pending
+                'status'              => 0, // default pending
                 'agreed'              => true,
             ]
         );
