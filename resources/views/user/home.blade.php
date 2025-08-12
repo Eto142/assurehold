@@ -77,12 +77,12 @@
     </div>
 </div>
 
-<style>
+{{-- <style>
     .placeholder {
         color: #888; /* Faint gray */
         font-style: italic;
     }
-</style>
+</style> --}}
 
                 <!-- Dashboard Cards -->
                <div class="row g-4 mb-4">
