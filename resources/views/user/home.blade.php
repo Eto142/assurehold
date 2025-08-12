@@ -19,33 +19,70 @@
                     <p class="progress-text">65% Complete - 3 of 8 steps remaining</p>
                 </div> --}}
 
-                <!-- Transaction Summary -->
-                <div class="transaction-summary">
-                    <h3 class="summary-title">
-                        <i class="fas fa-file-invoice-dollar"></i>
-                        Current Transaction Summary
-                    </h3>
-                    <div class="summary-item">
-                        <span class="summary-label">Transaction ID:</span>
-                        <span class="summary-value">{{ Auth::user()->transaction_id }}</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="summary-label">Transaction Type:</span>
-                        <span class="summary-value">{{ Auth::user()->transaction_type }}</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="summary-label">Escrow Amount:</span>
-                        <span class="summary-value">{{ Auth::user()->escrow_amount }}</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="summary-label">Service Fee:</span>
-                        <span class="summary-value">{{ Auth::user()->service_fee }}</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="summary-label">Total Amount:</span>
-                        <span class="summary-total">{{ Auth::user()->total_amount }}</span>
-                    </div>
-                </div>
+<!-- Transaction Summary -->
+<div class="transaction-summary">
+    <h3 class="summary-title">
+        <i class="fas fa-file-invoice-dollar"></i>
+        Current Transaction Summary
+    </h3>
+
+    <div class="summary-item">
+        <span class="summary-label">Transaction ID:</span>
+        <span class="summary-value">
+            {{ !empty(Auth::user()->transaction_id) ? Auth::user()->transaction_id : '‎' }}
+            @empty(Auth::user()->transaction_id)
+                <span class="placeholder">Not available yet</span>
+            @endempty
+        </span>
+    </div>
+
+    <div class="summary-item">
+        <span class="summary-label">Transaction Type:</span>
+        <span class="summary-value">
+            {{ !empty(Auth::user()->transaction_type) ? Auth::user()->transaction_type : '‎' }}
+            @empty(Auth::user()->transaction_type)
+                <span class="placeholder">Not available yet</span>
+            @endempty
+        </span>
+    </div>
+
+    <div class="summary-item">
+        <span class="summary-label">Escrow Amount:</span>
+        <span class="summary-value">
+            {{ !empty(Auth::user()->escrow_amount) ? Auth::user()->escrow_amount : '‎' }}
+            @empty(Auth::user()->escrow_amount)
+                <span class="placeholder">Not available yet</span>
+            @endempty
+        </span>
+    </div>
+
+    <div class="summary-item">
+        <span class="summary-label">Service Fee:</span>
+        <span class="summary-value">
+            {{ !empty(Auth::user()->service_fee) ? Auth::user()->service_fee : '‎' }}
+            @empty(Auth::user()->service_fee)
+                <span class="placeholder">Not available yet</span>
+            @endempty
+        </span>
+    </div>
+
+    <div class="summary-item">
+        <span class="summary-label">Total Amount:</span>
+        <span class="summary-total">
+            {{ !empty(Auth::user()->total_amount) ? Auth::user()->total_amount : '‎' }}
+            @empty(Auth::user()->total_amount)
+                <span class="placeholder">Not available yet</span>
+            @endempty
+        </span>
+    </div>
+</div>
+
+<style>
+    .placeholder {
+        color: #888; /* Faint gray */
+        font-style: italic;
+    }
+</style>
 
                 <!-- Dashboard Cards -->
                <div class="row g-4 mb-4">
@@ -217,7 +254,7 @@
                 </div>
 
                 <!-- Quick Actions -->
-                <div class="row g-4">
+                {{-- <div class="row g-4">
                     <div class="col-lg-6">
                         <div class="quick-actions">
                             <h3 class="quick-actions-title">
@@ -286,7 +323,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </main>
