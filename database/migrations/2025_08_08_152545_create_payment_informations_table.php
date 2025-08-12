@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('routing_number');
             $table->string('swift_code');
             $table->text('bank_address');
+            $table->tinyInteger('status')->default(0); // 0 = pending, 1 = approved
             $table->timestamps();
         });
     }

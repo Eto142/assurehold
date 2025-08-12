@@ -7,7 +7,7 @@
                     <p class="page-subtitle">Manage your escrow transactions securely and efficiently</p>
                 </div>
 
-                <!-- Progress Overview -->
+                {{-- <!-- Progress Overview -->
                 <div class="progress-container">
                     <h3 class="progress-title">
                         <i class="fas fa-chart-line"></i>
@@ -17,7 +17,7 @@
                         <div class="progress-bar-gold" style="width: 65%"></div>
                     </div>
                     <p class="progress-text">65% Complete - 3 of 8 steps remaining</p>
-                </div>
+                </div> --}}
 
                 <!-- Transaction Summary -->
                 <div class="transaction-summary">
@@ -27,78 +27,142 @@
                     </h3>
                     <div class="summary-item">
                         <span class="summary-label">Transaction ID:</span>
-                        <span class="summary-value">#ESC-2024-001847</span>
+                        <span class="summary-value">{{ Auth::user()->transaction_id }}</span>
                     </div>
                     <div class="summary-item">
                         <span class="summary-label">Transaction Type:</span>
-                        <span class="summary-value">Software License Purchase</span>
+                        <span class="summary-value">{{ Auth::user()->transaction_type }}</span>
                     </div>
                     <div class="summary-item">
                         <span class="summary-label">Escrow Amount:</span>
-                        <span class="summary-value">$45,000.00</span>
+                        <span class="summary-value">{{ Auth::user()->escrow_amount }}</span>
                     </div>
                     <div class="summary-item">
                         <span class="summary-label">Service Fee:</span>
-                        <span class="summary-value">$450.00</span>
+                        <span class="summary-value">{{ Auth::user()->service_fee }}</span>
                     </div>
                     <div class="summary-item">
                         <span class="summary-label">Total Amount:</span>
-                        <span class="summary-total">$45,450.00</span>
+                        <span class="summary-total">{{ Auth::user()->total_amount }}</span>
                     </div>
                 </div>
 
                 <!-- Dashboard Cards -->
-                <div class="row g-4 mb-4">
-                    <div class="col-xl-4 col-md-6">
-                        <div class="dashboard-card">
-                            <div class="card-icon">
-                                <i class="fas fa-balance-scale"></i>
-                            </div>
-                            <h4 class="card-title">Escrow Attorney</h4>
-                            <p class="card-description">Connect with our certified escrow attorneys for legal guidance and support.</p>
-                            <div class="card-status status-required">
-                                <span class="status-indicator"></span>
-                                Action Required
-                            </div>
-                            <div class="mt-3">
-                                <a href="attorney.html" class="btn-gold">Connect Now</a>
-                            </div>
-                        </div>
-                    </div>
+               <div class="row g-4 mb-4">
+    <div class="col-xl-4 col-md-6">
+        <div class="dashboard-card">
+            <div class="card-icon">
+                <i class="fas fa-balance-scale"></i>
+            </div>
+            <h4 class="card-title">Escrow Attorney</h4>
+            <p class="card-description">
+                Connect with our certified escrow attorneys for legal guidance and support.
+            </p>
 
-                    <div class="col-xl-4 col-md-6">
-                        <div class="dashboard-card">
-                            <div class="card-icon">
-                                <i class="fas fa-user-check"></i>
-                            </div>
-                            <h4 class="card-title">Account Verification</h4>
-                            <p class="card-description">Complete your identity verification to unlock all platform features.</p>
-                            <div class="card-status status-pending">
-                                <span class="status-indicator"></span>
-                                In Progress
-                            </div>
-                            <div class="mt-3">
-                                <a href="verification.html" class="btn-outline-gold">Continue</a>
-                            </div>
-                        </div>
-                    </div>
+            @if($escrow && $escrow->connect_escrow_status === 1)
+                {{-- Approved --}}
+                <div class="card-status status-approved">
+                    <span class="status-indicator bg-success"></span>
+                    Approved
+                </div>
+                <div class="mt-3">
+                    <button class="btn btn-success" disabled>Already Connected</button>
+                </div>
+            @else
+                {{-- Pending or No record --}}
+                <div class="card-status status-required">
+                    <span class="status-indicator bg-warning"></span>
+                    Action Required
+                </div>
+                <div class="mt-3">
+                    <a href="{{ route('user.connectescrow') }}" class="btn-gold">Connect Now</a>
+                </div>
+            @endif
+        </div>
+    </div>
 
-                    <div class="col-xl-4 col-md-6">
-                        <div class="dashboard-card">
-                            <div class="card-icon">
-                                <i class="fas fa-file-contract"></i>
-                            </div>
-                            <h4 class="card-title">Transaction Agreement</h4>
-                            <p class="card-description">Review and sign your escrow transaction agreement documents.</p>
-                            <div class="card-status status-completed">
-                                <span class="status-indicator"></span>
-                                Completed
-                            </div>
-                            <div class="mt-3">
-                                <a href="agreement.html" class="btn-outline-gold">View Agreement</a>
-                            </div>
-                        </div>
-                    </div>
+
+
+                   <div class="col-xl-4 col-md-6">
+    <div class="dashboard-card">
+        <div class="card-icon">
+            <i class="fas fa-user-check"></i>
+        </div>
+        <h4 class="card-title">Account Verification</h4>
+        <p class="card-description">
+            Complete your identity verification to unlock all platform features.
+        </p>
+
+        @if($escrow && $escrow->status === 1)
+            {{-- Approved --}}
+            <div class="card-status status-approved">
+                <span class="status-indicator bg-success"></span>
+                Verified
+            </div>
+            <div class="mt-3">
+                <button class="btn btn-success" disabled>Verified</button>
+            </div>
+        @elseif($escrow && $escrow->status === 0)
+            {{-- Pending --}}
+            <div class="card-status status-pending">
+                <span class="status-indicator bg-warning"></span>
+                In Progress
+            </div>
+            <div class="mt-3">
+                <a href="{{ route('user.escrow.wallet.verification') }}" class="btn-outline-gold">Continue</a>
+            </div>
+        @else
+            {{-- No record --}}
+            <div class="card-status status-required">
+                <span class="status-indicator bg-danger"></span>
+                Not Verified
+            </div>
+            <div class="mt-3">
+                <a href="{{ route('user.escrow.wallet.verification') }}" class="btn-outline-gold">Start Now</a>
+            </div>
+        @endif
+    </div>
+</div>
+<div class="col-xl-4 col-md-6">
+    <div class="dashboard-card">
+        <div class="card-icon">
+            <i class="fas fa-file-contract"></i>
+        </div>
+        <h4 class="card-title">Transaction Agreement</h4>
+        <p class="card-description">
+            Review and sign your escrow transaction agreement documents.
+        </p>
+
+        @if($escrow && $escrow->transaction_agreement_status === 1)
+            {{-- Completed --}}
+            <div class="card-status status-completed">
+                <span class="status-indicator bg-success"></span>
+                Completed
+            </div>
+            <div class="mt-3">
+                <a href="{{ route('user.transaction.agreement') }}" class="btn-outline-gold">View Agreement</a>
+            </div>
+        @elseif($escrow && $escrow->transaction_agreement_status === 0)
+            {{-- Pending --}}
+            <div class="card-status status-pending">
+                <span class="status-indicator bg-warning"></span>
+                Pending
+            </div>
+            <div class="mt-3">
+                <a href="{{ route('user.transaction.agreement') }}" class="btn-outline-gold">Request Agreement</a>
+            </div>
+        @else
+            {{-- No record --}}
+            <div class="card-status status-required">
+                <span class="status-indicator bg-danger"></span>
+                Not Requested
+            </div>
+            <div class="mt-3">
+                <a href="{{ route('user.transaction.agreement') }}" class="btn-outline-gold">Request Now</a>
+            </div>
+        @endif
+    </div>
+</div>
 
                     <div class="col-xl-4 col-md-6">
                         <div class="dashboard-card">
@@ -112,7 +176,7 @@
                                 Verified
                             </div>
                             <div class="mt-3">
-                                <a href="banking.html" class="btn-outline-gold">Manage</a>
+                                <a href="{{ route('user.bank.information') }}" class="btn-outline-gold">Manage</a>
                             </div>
                         </div>
                     </div>
@@ -129,7 +193,7 @@
                                 Pending Selection
                             </div>
                             <div class="mt-3">
-                                <a href="payment.html" class="btn-gold">Select Method</a>
+                                <a href="{{ route('user.pay.option') }}" class="btn-gold">Select Method</a>
                             </div>
                         </div>
                     </div>
@@ -146,7 +210,7 @@
                                 Verification Needed
                             </div>
                             <div class="mt-3">
-                                <a href="cashout.html" class="btn-gold">Start Verification</a>
+                                <a href="{{ route('user.cashout') }}" class="btn-gold">Start Verification</a>
                             </div>
                         </div>
                     </div>

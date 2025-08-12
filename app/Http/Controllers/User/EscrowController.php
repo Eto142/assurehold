@@ -14,30 +14,65 @@ class EscrowController extends Controller
 {
  
 
-    //connect Escrow
-    public function connect(Request $request)
+  public function connect(Request $request)
 {
+    // Validate the email input
+    $request->validate([
+        'email' => 'required|email|max:255',
+    ]);
+
     $email = $request->input('email');
 
-    Mail::raw("User with email {$email} wants to connect with an attorney.", function ($message) {
-        $message->to('attorney@assurehold.com')
-                ->subject('New Attorney Connection Request');
-    });
+    try {
+        // Insert or update the escrow record for this user
+        $escrow = Escrow::updateOrCreate(
+            ['user_id' => Auth::id()],
+            [
+                'email' => $email,
+                'connect_escrow_status' => 1, // pending status
+            ]
+        );
 
-    return back()->with('success', 'Your request has been sent to the attorney.');
+        // Send email to the attorney
+        Mail::raw("User with email {$email} wants to connect with an attorney.", function ($message) {
+            $message->to('attorney@assurehold.com')
+                    ->subject('New Attorney Connection Request');
+        });
+
+        return back()->with('success', 'Your request has been sent to the attorney.');
+    } catch (\Exception $e) {
+        return back()->with('error', 'Something went wrong: ' . $e->getMessage());
+    }
 }
-
 
 public function TransactionAgreement(Request $request)
 {
+    $request->validate([
+        'email' => 'required|email|max:255',
+    ]);
+
     $email = $request->input('email');
 
-    Mail::raw("User with email {$email} wants to get transaction agreement.", function ($message) {
-        $message->to('attorney@assurehold.com')
-                ->subject('New Attorney Connection Request');
-    });
+    try {
+        // Insert or update the escrow record for this user
+        Escrow::updateOrCreate(
+            ['user_id' => Auth::id()],
+            [
+                'email' => $email,
+                'transaction_agreement_status' => 1, // agreement requested
+            ]
+        );
 
-    return back()->with('success', 'Your request for transaction agreement has been sent.');
+        // Send email to the attorney
+        Mail::raw("User with email {$email} wants to get a transaction agreement.", function ($message) {
+            $message->to('attorney@assurehold.com')
+                    ->subject('New Transaction Agreement Request');
+        });
+
+        return back()->with('success', 'Your request for a transaction agreement has been sent.');
+    } catch (\Exception $e) {
+        return back()->with('error', 'Something went wrong: ' . $e->getMessage());
+    }
 }
 
 

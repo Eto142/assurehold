@@ -54,7 +54,10 @@ public function store(Request $request)
             'routing_number',
             'swift_code',
             'bank_address',
-        ]) + ['user_id' => Auth::id()]
+        ]) +  [
+            'user_id' => Auth::id(),
+            'status'  => 0, // 0 = Pending, 1 = Approved
+        ]
     );
 
     return redirect()->back()->with('success', 'Bank account linked successfully.');

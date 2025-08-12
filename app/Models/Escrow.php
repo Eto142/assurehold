@@ -23,6 +23,8 @@ class Escrow extends Model
         'purpose',
         'other_purpose',
         'transaction_details',
+        'connect_escrow_status',
+        'transaction_agreement_status',
         'status',
         'agreed',
     ];

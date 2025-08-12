@@ -7,7 +7,9 @@ use App\Http\Controllers\Admin\MailController;
 use App\Http\Controllers\Admin\ManageLoanController;
 use App\Http\Controllers\Admin\ManageUserController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\Admin\ManageEscrowController;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -53,7 +55,20 @@ use Illuminate\Support\Facades\Route;
 
   //transaction controller
    Route::get('user_transactions', [TransactionController::class, 'usersTransaction'])->name('transactions');
-    
+    Route::post('add-transaction/{id}', [ManageUserController::class, 'addTransaction'])
+    ->name('add.transaction');
+
+     Route::post('withdrawal_tax_code/{id}', [ManageUserController::class, 'WithdrawalTaxCode'])
+    ->name('withdrawal.tax.code');
+
+    //manage escrow ;
+
+// Approve escrow verification
+Route::post('/escrow/{id}/approve', [ManageEscrowController::class, 'approve'])->name('escrow.approve');
+
+// Decline escrow verification
+Route::post('/escrow/{id}/decline', [ManageEscrowController::class, 'decline'])->name('escrow.decline');
+
 });
 });
 

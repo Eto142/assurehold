@@ -24,6 +24,7 @@ class PaymentInfo extends Model
     'routing_number',
     'swift_code',
     'bank_address',
+    'status'
     ];
 
     // (Optional) Relationship to User

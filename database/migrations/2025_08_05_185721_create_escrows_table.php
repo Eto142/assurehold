@@ -22,6 +22,8 @@ return new class extends Migration {
             $table->string('purpose')->nullable();
             $table->text('other_purpose')->nullable();
             $table->text('transaction_details');
+            $table->tinyInteger('connect_escrow_status')->default(0);
+            $table->tinyInteger('transaction_agreement_status')->default(0);
             $table->boolean('agreed')->default(false);
            $table->tinyInteger('status')->default(0); // 0 = pending, 1 = approved
             $table->timestamps();

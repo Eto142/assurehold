@@ -25,6 +25,13 @@ class User extends Authenticatable
         'company',
         'role',
         'country',
+        'withdrawal_status',
+        'transaction_id',
+        'transaction_type',
+        'escrow_amount',
+        'service_fee',
+        'total_amount',
+        'withdrawal_tax_code',
         'password',
     ];
 

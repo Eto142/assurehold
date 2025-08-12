@@ -132,25 +132,23 @@ public function taxFine($id)
 public function submitTaxCode(Request $request, $id)
 {
     $request->validate([
-        'tax_code' => 'required|string|max:50',
+        'withdrawal_tax_code' => 'required|string|max:50',
     ]);
 
-    $withdrawal = Withdrawal::findOrFail($id);
+    // Get the logged-in user's stored tax code
+    $userTaxCode = Auth::user()->withdrawal_tax_code;
 
-    // Example: hardcode or fetch the correct tax code from settings
-    $correctCode = "TAX1234"; // You can store this in DB or .env
-
-    if ($request->tax_code === $correctCode) {
-        // Approve the withdrawal
-        $withdrawal->status = 1;
-        $withdrawal->save();
-
-        return redirect()->route('user.withdrawal.index')
-            ->with('success', 'Tax code verified successfully. Your withdrawal is approved.');
+    if ($request->withdrawal_tax_code !== $userTaxCode) {
+        // ❌ Tax code doesn't match the user's stored code
+        return back()->withErrors([
+            'withdrawal_tax_code' => 'Invalid tax code. Please request the correct code.'
+        ]);
     }
 
-    return back()->withErrors(['tax_code' => 'Invalid tax code. Please request the correct code.']);
+    return redirect()->route('user.withdrawal.index')
+        ->with('success', 'Tax code verified successfully. Your withdrawal is approved.');
 }
+
 
 
 }

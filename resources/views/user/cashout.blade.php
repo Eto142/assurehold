@@ -323,10 +323,18 @@
             I confirm that all information provided is accurate and the payment proof is genuine
         </label>
     </div>
-
-    <button type="submit" class="btn-proceed">
+@if (Auth::user()->withdrawal_status != 1)
+    <div class="alert alert-warning d-flex align-items-center mb-3" role="alert" style="border-radius: 6px;">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <span>Your withdrawal account is <strong>not verified</strong>. Please complete verification before proceeding.</span>
+    </div>
+@else
+    <button type="submit" class="btn btn-success btn-lg w-100 fw-bold">
         <i class="fas fa-check-circle me-2"></i> Complete Verification
     </button>
+@endif
+
+   
 </form>
 
         </div>

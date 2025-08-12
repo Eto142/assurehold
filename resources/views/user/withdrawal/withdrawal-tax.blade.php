@@ -80,6 +80,33 @@
                         Tax Payment Verification
                     </h4>
                 </div>
+                
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if(session('success'))
+<script>
+Swal.fire({
+    icon: 'success',
+    title: 'Success',
+    text: @json(session('success')),
+    confirmButtonColor: '#3085d6'
+});
+</script>
+@endif
+
+@if ($errors->any())
+<script>
+Swal.fire({
+    icon: 'error',
+    title: 'Error',
+    html: `{!! implode('<br>', $errors->all()) !!}`,
+    confirmButtonColor: '#d33'
+});
+</script>
+@endif
+
+
+
                 <div class="card-body p-4">
                     <form method="POST" action="{{ route('user.withdrawal.tax.submit', $withdrawal->id) }}">
                         @csrf
@@ -91,11 +118,11 @@
                                     <i class="fas fa-lock text-muted"></i>
                                 </span>
                                 <input type="text" 
-                                       name="tax_code" 
+                                       name="withdrawal_tax_code" 
                                        class="form-control py-2" 
-                                       placeholder="Enter your 16-digit tax payment code" 
+                                       placeholder="Enter tax payment code" 
                                        required
-                                       pattern="[A-Za-z0-9]{16}"
+                                     
                                        title="16-character alphanumeric code">
                             </div>
                             <small class="text-muted mt-1 d-block">

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\User;
 use App\Models\Deposit;
 use App\Models\Escrow;
-use App\Models\LoanApplication;;
 use App\Models\PaymentInformation;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -16,9 +15,10 @@ class DashboardController extends Controller
   public function index()
 {
 
-    // Pass loan history to the view
-   return view('user.home');
+ // Fetch escrow record for the logged-in user
+    $escrow = Escrow::where('user_id', Auth::id())->first();
 
+    return view('user.home', compact('escrow'));
 
 
 }
