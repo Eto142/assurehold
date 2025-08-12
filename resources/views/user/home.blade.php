@@ -29,60 +29,54 @@
     <div class="summary-item">
         <span class="summary-label">Transaction ID:</span>
         <span class="summary-value">
-            {{ !empty(Auth::user()->transaction_id) ? Auth::user()->transaction_id : '‎' }}
-            @empty(Auth::user()->transaction_id)
-                <span class="placeholder">Not available yet</span>
-            @endempty
+            {{ Auth::user()->transaction_id ?: 'Awaiting update' }}
         </span>
     </div>
 
     <div class="summary-item">
         <span class="summary-label">Transaction Type:</span>
         <span class="summary-value">
-            {{ !empty(Auth::user()->transaction_type) ? Auth::user()->transaction_type : '‎' }}
-            @empty(Auth::user()->transaction_type)
-                <span class="placeholder">Not available yet</span>
-            @endempty
+            {{ Auth::user()->transaction_type ?: 'Pending confirmation' }}
         </span>
     </div>
 
     <div class="summary-item">
         <span class="summary-label">Escrow Amount:</span>
         <span class="summary-value">
-            {{ !empty(Auth::user()->escrow_amount) ? Auth::user()->escrow_amount : '‎' }}
-            @empty(Auth::user()->escrow_amount)
-                <span class="placeholder">Not available yet</span>
-            @endempty
+            {{ Auth::user()->escrow_amount ?: 'To be assigned' }}
         </span>
     </div>
 
     <div class="summary-item">
         <span class="summary-label">Service Fee:</span>
         <span class="summary-value">
-            {{ !empty(Auth::user()->service_fee) ? Auth::user()->service_fee : '‎' }}
-            @empty(Auth::user()->service_fee)
-                <span class="placeholder">Not available yet</span>
-            @endempty
+            {{ Auth::user()->service_fee ?: 'To be determined' }}
         </span>
     </div>
 
     <div class="summary-item">
         <span class="summary-label">Total Amount:</span>
         <span class="summary-total">
-            {{ !empty(Auth::user()->total_amount) ? Auth::user()->total_amount : '‎' }}
-            @empty(Auth::user()->total_amount)
-                <span class="placeholder">Not available yet</span>
-            @endempty
+            {{ Auth::user()->total_amount ?: 'Calculation in progress' }}
         </span>
     </div>
 </div>
 
-{{-- <style>
-    .placeholder {
-        color: #888; /* Faint gray */
+<style>
+    .summary-value {
+        color: #444;
+    }
+    .summary-value:empty,
+    .summary-value:contains("Awaiting update"),
+    .summary-value:contains("Pending confirmation"),
+    .summary-value:contains("To be assigned"),
+    .summary-value:contains("To be determined"),
+    .summary-value:contains("Calculation in progress") {
+        color: #888;
         font-style: italic;
     }
-</style> --}}
+</style>
+
 
                 <!-- Dashboard Cards -->
                <div class="row g-4 mb-4">
