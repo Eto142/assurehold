@@ -32,8 +32,11 @@ public function register(Request $request)
             'company'  => 'required|string|max:255',
             'email'      => 'required|email|unique:users,email',
             'password'   => 'required|string|min:8|confirmed',
+            
         ]);
 
+          $transactionId = 'TXN-' . strtoupper(uniqid()) . rand(100, 999);
+          
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
@@ -47,6 +50,7 @@ public function register(Request $request)
             'role'  => $request->input('role'),
             'email'      => $request->input('email'),
             'password'   => bcrypt($request->input('password')),
+               'transaction_id'  => $transactionId, // save it here
         ]);
 
         Auth::login($user); // Optional: remove if you don’t want auto-login
