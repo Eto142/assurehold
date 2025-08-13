@@ -70,4 +70,35 @@ class AuthController extends Controller
 
         return redirect('/login'); // Redirects to the homepage or login page
     }
+
+
+
+
+    public function showVerifyForm()
+{
+    return view('auth.verify');
+}
+
+public function verifyCode(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+        'code'  => 'required|digits:6',
+    ]);
+
+    $user = User::where('email', $request->email)
+                ->where('verification_code', $request->code)
+                ->first();
+
+    if ($user) {
+        $user->is_verified = true;
+        $user->verification_code = null;
+        $user->save();
+
+        return redirect()->route('login')->with('success', 'Account verified! You can now log in.');
+    }
+
+    return back()->withErrors(['code' => 'Invalid verification code.']);
+}
+
 }

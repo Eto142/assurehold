@@ -38,6 +38,9 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 
 // Logout Route
 Route::post('/logout', [App\Http\Controllers\Auth\AuthController::class, 'logout'])->name('user.logout');
+Route::get('/verify', [AuthController::class, 'showVerifyForm'])->name('verify.form');
+Route::post('/verify', [AuthController::class, 'verifyCode'])->name('verify.code');
+
 
 Route::prefix('user')->as('user.')->middleware('auth')->group(function () {
     Route::get('/home', [DashboardController::class, 'index'])->name('home'); // user.home

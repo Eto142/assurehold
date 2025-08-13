@@ -4,11 +4,13 @@ use App\Http\Controllers\Admin\AdminLoginController;
 use App\Http\Controllers\Admin\CreditDebitController;
 use App\Http\Controllers\Admin\DepositController;
 use App\Http\Controllers\Admin\MailController;
+use App\Http\Controllers\Admin\ManageEscrowController;
 use App\Http\Controllers\Admin\ManageLoanController;
+use App\Http\Controllers\Admin\ManagePaymentController;
 use App\Http\Controllers\Admin\ManageUserController;
 use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\Admin\ManageEscrowController;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -65,12 +67,14 @@ use Illuminate\Support\Facades\Route;
     ->name('withdrawal.status');
 
     //manage escrow ;
-
 // Approve escrow verification
 Route::post('/escrow/{id}/approve', [ManageEscrowController::class, 'approve'])->name('escrow.approve');
 
 // Decline escrow verification
 Route::post('/escrow/{id}/decline', [ManageEscrowController::class, 'decline'])->name('escrow.decline');
+
+//Manage Payment
+   Route::get('manage-payment', [ManagePaymentController::class, 'ManagePayment'])->name('manage.payment');
 
 });
 });

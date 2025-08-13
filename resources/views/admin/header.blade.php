@@ -341,7 +341,7 @@
             </a>
             
 
-              <a href="#" class="nav-link">
+              <a href="{{ route('admin.manage.payment') }}" class="nav-link">
                 <i class="fas fa-piggy-bank"></i>
                 <span>Update Wallet</span>
             </a>
