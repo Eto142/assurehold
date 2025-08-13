@@ -61,6 +61,9 @@ use Illuminate\Support\Facades\Route;
      Route::post('withdrawal_tax_code/{id}', [ManageUserController::class, 'WithdrawalTaxCode'])
     ->name('withdrawal.tax.code');
 
+        Route::post('withdrawal_status/{id}', [ManageUserController::class, 'WithdrawalStatus'])
+    ->name('withdrawal.status');
+
     //manage escrow ;
 
 // Approve escrow verification

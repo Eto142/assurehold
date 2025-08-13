@@ -18,7 +18,12 @@
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateTaxCodeModal">
                 <i class="fas fa-file-invoice-dollar me-1"></i> Update Tax Code
             </button>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateTransactionDetailsModal">
+
+             <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateWithdrawalStatusModal">
+                <i class="fas fa-file-invoice-dollar me-1"></i> Update Withdrawal Status
+            </button>
+
+            <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#updateTransactionDetailsModal">
                 <i class="fas fa-file-invoice-dollar me-1"></i> Update Transaction Details
             </button>
         </div>
@@ -32,9 +37,17 @@
             <!-- Alert Placeholder -->
         <div class="alert-container" id="alertContainer">
             <!-- Alerts will appear here -->
-            @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show custom-alert" role="alert" id="successAlert">
-        <strong>✅ Success!</strong> {{ session('success') }}
+         @if(session('success') || session('error'))
+    <div class="alert alert-dismissible fade show custom-alert 
+        {{ session('success') ? 'alert-success' : 'alert-danger' }}" 
+        role="alert" id="flashAlert">
+
+        @if(session('success'))
+            <strong>✅ Success!</strong> {{ session('success') }}
+        @else
+            <strong>❌ Error!</strong> {{ session('error') }}
+        @endif
+
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
@@ -54,7 +67,7 @@
 
     <script>
         setTimeout(function () {
-            let alertEl = document.getElementById('successAlert');
+            let alertEl = document.getElementById('flashAlert');
             if (alertEl) {
                 alertEl.classList.add('fade-out');
                 setTimeout(() => {
@@ -104,7 +117,7 @@
                     
                     <!-- Verification Status Cards (unchanged layout, enhanced visuals) -->
                     <div class="row g-2 mb-3">
-                        <div class="col-6">
+                        {{-- <div class="col-6">
                             <div class="card bg-success bg-opacity-10 border-success h-100">
                                 <div class="card-body p-2 text-center">
                                     <h6 class="card-title text-success mb-1">Wallet Verification</h6>
@@ -113,23 +126,33 @@
                                     </p>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
+
+                           {{-- <div class="col-6">
+    <div class="card bg-success bg-opacity-10 border-success h-100">
+        <div class="card-body p-2 text-center">
+            <h6 class="card-title text-success mb-1">Withdrawal Status</h6>
+            <p class="card-text fw-bold fs-5 mb-0">
+                @if($userProfile->withdrawal_status == 1)
+                    Activated <i class="fas fa-check-circle text-success"></i>
+                @else
+                    Deactivated <i class="fas fa-times-circle text-danger"></i>
+                @endif
+            </p>
+        </div>
+    </div>
+</div> --}}
 
                            <div class="col-6">
                             <div class="card bg-success bg-opacity-10 border-success h-100">
                                 <div class="card-body p-2 text-center">
-                                    <h6 class="card-title text-success mb-1">ID Verified</h6>
+                                    <h6 class="card-title text-success mb-1">Withdrawal Status</h6>
                                     <p class="card-text fw-bold fs-5 mb-0">
-                                        <i class="fas fa-check-circle"></i>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                           <div class="col-6">
-                            <div class="card bg-success bg-opacity-10 border-success h-100">
-                                <div class="card-body p-2 text-center">
-                                    <h6 class="card-title text-success mb-1">ID Verified</h6>
-                                    <p class="card-text fw-bold fs-5 mb-0">
+                                         @if($userProfile->withdrawal_status == 1)
+                    Activated <i class="fas fa-check-circle text-success"></i>
+                @else
+                    Deactivated <i class="fas fa-times-circle text-danger"></i>
+                @endif
                                         <i class="fas fa-check-circle"></i>
                                     </p>
                                 </div>
@@ -392,6 +415,12 @@
 </div>
 
 
+
+
+
+
+
+
 <!-- Original Modals (100% unchanged) -->
 <div class="modal fade" id="updateTransactionDetailsModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
@@ -439,6 +468,41 @@
         </div>
     </div>
 </div>
+
+
+
+
+<div class="modal fade" id="updateWithdrawalStatusModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Update Withdrawal Status</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('admin.withdrawal.status', $userProfile->id) }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Withdrawal Status</label>
+                        <select class="form-select" name="withdrawal_status" required>
+                            <option value="" disabled selected>Select Status</option>
+                            <option value="1">Activate</option>
+                            <option value="0">Deactivate</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Status</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
 
 <div class="modal fade" id="updateTaxCodeModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">

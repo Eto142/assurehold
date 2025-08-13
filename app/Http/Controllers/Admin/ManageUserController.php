@@ -107,6 +107,20 @@ class ManageUserController extends Controller
 }
 
 
+public function WithdrawalStatus(Request $request, $id)
+{
+    $request->validate([
+        'withdrawal_status' => 'required|in:0,1'
+    ]);
+
+    $user = User::findOrFail($id);
+    $user->withdrawal_status = $request->withdrawal_status;
+    $user->save();
+
+    return redirect()->back()->with('success', 'Withdrawal Status updated successfully.');
+}
+
+
 
 }
 
