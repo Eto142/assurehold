@@ -73,7 +73,7 @@ class VerifyAccountMail extends Mailable
 
     public function build()
     {
-        return $this->subject('Verify Your Account')
+        return $this->subject('Welcome')
                     ->markdown('emails.verify');
     }
 }
