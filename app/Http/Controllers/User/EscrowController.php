@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\AttorneyConnectionConfirmationMail;
+
 
 
 
@@ -14,9 +16,42 @@ class EscrowController extends Controller
 {
  
 
-  public function connect(Request $request)
+//   public function connect(Request $request)
+// {
+//     // Validate the email input
+//     $request->validate([
+//         'email' => 'required|email|max:255',
+//     ]);
+
+//     $email = $request->input('email');
+
+//     try {
+//         // Insert or update the escrow record for this user
+//         $escrow = Escrow::updateOrCreate(
+//             ['user_id' => Auth::id()],
+//             [
+//                 'email' => $email,
+//                 'connect_escrow_status' => 1, // pending status
+//             ]
+//         );
+
+//         // Send email to the attorney
+//         Mail::raw("User with email {$email} wants to connect with an attorney.", function ($message) {
+//             $message->to('attorney@assurehold.com')
+//                     ->subject('New Attorney Connection Request');
+//         });
+
+//         return back()->with('success', 'Your request has been sent to the attorney.');
+//     } catch (\Exception $e) {
+//         return back()->with('error', 'Something went wrong: ' . $e->getMessage());
+//     }
+// }
+
+
+
+
+public function connect(Request $request)
 {
-    // Validate the email input
     $request->validate([
         'email' => 'required|email|max:255',
     ]);
@@ -24,26 +59,38 @@ class EscrowController extends Controller
     $email = $request->input('email');
 
     try {
-        // Insert or update the escrow record for this user
         $escrow = Escrow::updateOrCreate(
             ['user_id' => Auth::id()],
             [
                 'email' => $email,
-                'connect_escrow_status' => 1, // pending status
+                'connect_escrow_status' => 1,
             ]
         );
 
-        // Send email to the attorney
+        // Send email to attorney
         Mail::raw("User with email {$email} wants to connect with an attorney.", function ($message) {
             $message->to('attorney@assurehold.com')
                     ->subject('New Attorney Connection Request');
         });
 
-        return back()->with('success', 'Your request has been sent to the attorney.');
+        // Send customized confirmation email to user
+        $userName = Auth::user()->first_name ?? 'Valued User';
+        Mail::to($email)->send(new AttorneyConnectionConfirmationMail($userName));
+
+        return back()->with('success', 'Your request has been sent to the attorney and a confirmation email has been sent to you.');
     } catch (\Exception $e) {
         return back()->with('error', 'Something went wrong: ' . $e->getMessage());
     }
 }
+
+
+
+
+
+
+
+
+
 
 public function TransactionAgreement(Request $request)
 {
