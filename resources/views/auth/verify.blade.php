@@ -432,78 +432,96 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Auto-focus the code input on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('code').focus();
-        });
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Auto-focus the code input on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('code').focus();
+    });
 
-        // Form submission with AJAX
-        document.getElementById('verifyForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+    // Remove the auto-submit on code completion
+    document.getElementById('code').addEventListener('input', function(e) {
+        // Auto-format to only allow digits
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
 
-            const form = e.target;
-            const formData = new FormData(form);
-            const token = document.querySelector('input[name="_token"]').value;
-            const verifyButton = form.querySelector('button[type="submit"]');
-            
-            // Disable button during submission
-            verifyButton.disabled = true;
-            verifyButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Verifying...';
+    // Form submission with AJAX
+    document.getElementById('verifyForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
 
-            try {
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': token,
-                        'Accept': 'application/json',
-                    },
-                    body: formData
-                });
+        const form = e.target;
+        const formData = new FormData(form);
+        const token = document.querySelector('input[name="_token"]').value;
+        const verifyButton = form.querySelector('button[type="submit"]');
+        
+        // Disable button during submission
+        verifyButton.disabled = true;
+        verifyButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Verifying...';
 
-                const data = await response.json();
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': token,
+                    'Accept': 'application/json',
+                },
+                body: formData
+            });
 
-                if (response.ok && data.success) {
-                    toastr.success(data.message || 'Verification successful! Redirecting...');
-                    setTimeout(() => {
-                        window.location.href = data.redirect || "{{ route('user.home') }}";
-                    }, 1500);
-                } else {
-                    // Re-enable button
-                    verifyButton.disabled = false;
-                    verifyButton.textContent = 'Verify';
-                    
-                    let errorMsg = data.message || 'Verification failed.';
-                    if (data.errors) {
-                        for (const key in data.errors) {
-                            if (data.errors.hasOwnProperty(key)) {
-                                toastr.error(data.errors[key][0]);
-                            }
-                        }
-                    } else {
-                        toastr.error(errorMsg);
-                    }
-                }
+            const data = await response.json();
 
-            } catch (error) {
+            if (response.ok && data.success) {
+                toastr.success(data.message || 'Verification successful! Redirecting...');
+                setTimeout(() => {
+                    window.location.href = data.redirect || "{{ route('user.home') }}";
+                }, 1500);
+            } else {
                 // Re-enable button
                 verifyButton.disabled = false;
                 verifyButton.textContent = 'Verify';
                 
-                toastr.error("Something went wrong. Please try again.");
-                console.error("Verification error:", error);
+                let errorMsg = data.message || 'Verification failed.';
+                if (data.errors) {
+                    for (const key in data.errors) {
+                        if (data.errors.hasOwnProperty(key)) {
+                            toastr.error(data.errors[key][0]);
+                        }
+                    }
+                } else {
+                    toastr.error(errorMsg);
+                }
             }
-        });
 
-        // Optional: Add input formatting for better UX
-        document.getElementById('code').addEventListener('input', function(e) {
-            // Remove any non-digit characters
-            this.value = this.value.replace(/[^0-9]/g, '');
+        } catch (error) {
+            // Re-enable button
+            verifyButton.disabled = false;
+            verifyButton.textContent = 'Verify';
             
-            // Auto-uppercase (if you want letters)
-            // this.value = this.value.toUpperCase();
-        });
-    </script>
+            toastr.error("Something went wrong. Please try again.");
+            console.error("Verification error:", error);
+        }
+    });
+
+    // Clear validation errors when user starts typing
+    document.getElementById('email').addEventListener('input', function() {
+        this.classList.remove('is-invalid');
+    });
+    
+    document.getElementById('code').addEventListener('input', function() {
+        this.classList.remove('is-invalid');
+    });
+
+    // Add this to your CSS if not already present
+    const style = document.createElement('style');
+    style.textContent = `
+        .is-invalid {
+            border-color: #dc3545 !important;
+        }
+        .is-invalid:focus {
+            box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25) !important;
+        }
+    `;
+    document.head.appendChild(style);
+</script>
 </body>
 </html>
