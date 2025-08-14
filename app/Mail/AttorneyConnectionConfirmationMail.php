@@ -12,20 +12,19 @@ class AttorneyConnectionConfirmationMail extends Mailable
 
     public $userName;
 
-    /**
-     * Create a new message instance.
-     */
     public function __construct($userName)
     {
         $this->userName = $userName;
     }
 
-    /**
-     * Build the message.
-     */
     public function build()
     {
-        return $this->subject('Attorney Connection Request Received')
-                    ->view('emails.attorney_connection_confirmation');
+        return $this->from('no-reply@assurehold.com', 'AssureHold Support')
+                    ->subject('We Received Your Attorney Connection Request')
+                    ->view('emails.attorney_connection_confirmation')
+                    ->with([
+                        'userName' => $this->userName,
+                        'year' => date('Y'),
+                    ]);
     }
 }

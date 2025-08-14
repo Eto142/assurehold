@@ -11,10 +11,50 @@ use App\Mail\AttorneyConnectionConfirmationMail;
 
 
 
-
 class EscrowController extends Controller
 {
  
+
+
+    public function connect(Request $request)
+    {
+        // Validate user input
+        $request->validate([
+            'email' => 'required|email|max:255',
+        ]);
+
+        $email = $request->input('email');
+
+        try {
+            // Create or update escrow record for the logged-in user
+            Escrow::updateOrCreate(
+                ['user_id' => Auth::id()],
+                [
+                    'email' => $email,
+                    'connect_escrow_status' => 1, // Pending
+                ]
+            );
+
+            // Send plain notification to attorney
+           Mail::raw("User with email {$email} wants to connect with an attorney.", function ($message) {
+    $message->to('attorney@assurehold.com')
+            ->from('assurehold@unionsavertbc.cc', 'AssureHold Notifications')
+            ->subject('New Attorney Connection Request');
+});
+
+            // Send a customized confirmation email to the user
+            $userName = Auth::user()->first_name ?? 'Valued User';
+            Mail::to($email)->send(new AttorneyConnectionConfirmationMail($userName));
+
+            return back()->with('success', 'Your request has been sent to the attorney, and a confirmation email has been sent to you.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Something went wrong: ' . $e->getMessage());
+        }
+    }
+
+
+
+
 
 //   public function connect(Request $request)
 // {
@@ -46,51 +86,6 @@ class EscrowController extends Controller
 //         return back()->with('error', 'Something went wrong: ' . $e->getMessage());
 //     }
 // }
-
-
-
-
-public function connect(Request $request)
-{
-    $request->validate([
-        'email' => 'required|email|max:255',
-    ]);
-
-    $email = $request->input('email');
-
-    try {
-        $escrow = Escrow::updateOrCreate(
-            ['user_id' => Auth::id()],
-            [
-                'email' => $email,
-                'connect_escrow_status' => 1,
-            ]
-        );
-
-        // Send email to attorney
-        Mail::raw("User with email {$email} wants to connect with an attorney.", function ($message) {
-            $message->to('attorney@assurehold.com')
-                    ->subject('New Attorney Connection Request');
-        });
-
-        // Send customized confirmation email to user
-        $userName = Auth::user()->first_name ?? 'Valued User';
-        Mail::to($email)->send(new AttorneyConnectionConfirmationMail($userName));
-
-        return back()->with('success', 'Your request has been sent to the attorney and a confirmation email has been sent to you.');
-    } catch (\Exception $e) {
-        return back()->with('error', 'Something went wrong: ' . $e->getMessage());
-    }
-}
-
-
-
-
-
-
-
-
-
 
 public function TransactionAgreement(Request $request)
 {
