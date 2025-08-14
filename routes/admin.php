@@ -79,8 +79,8 @@ Route::post('/escrow/{id}/decline', [ManageEscrowController::class, 'decline'])-
 
    // Send Mail
 
-Route::get('/admin/send-email', [SendEmailController::class, 'index'])->name('send.email');
-Route::post('/admin/send-email', [SendEmailController::class, 'send'])->name('send.email.post');
+Route::get('/send-email', [SendEmailController::class, 'index'])->name('send.email');
+Route::post('/send-email', [SendEmailController::class, 'send'])->name('send.email.post');
 
 });
 });
