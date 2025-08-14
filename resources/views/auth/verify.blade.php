@@ -9,7 +9,6 @@
     <button type="submit">Verify</button>
 </form> --}}
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -383,9 +382,9 @@
                         <div class="input-group">
                             <input type="text" class="form-control" id="code" name="code" required maxlength="6">
                         </div>
-                        {{-- <div class="resend-code">
+                        <div class="resend-code">
                             <a href="{{ route('resend.code') }}">Resend verification code</a>
-                        </div> --}}
+                        </div>
                     </div>
                     
                     <button type="submit" class="btn btn-verify">Verify</button>
@@ -435,14 +434,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Auto-focus the first code input
-        document.getElementById('code').focus();
-
-        // Auto move between code inputs
-        document.getElementById('verifyForm').addEventListener('input', function(e) {
-            if (e.target.id === 'code' && e.target.value.length === e.target.maxLength) {
-                document.getElementById('verifyForm').submit();
-            }
+        // Auto-focus the code input on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('code').focus();
         });
 
         // Form submission with AJAX
@@ -452,6 +446,11 @@
             const form = e.target;
             const formData = new FormData(form);
             const token = document.querySelector('input[name="_token"]').value;
+            const verifyButton = form.querySelector('button[type="submit"]');
+            
+            // Disable button during submission
+            verifyButton.disabled = true;
+            verifyButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Verifying...';
 
             try {
                 const response = await fetch(form.action, {
@@ -471,6 +470,10 @@
                         window.location.href = data.redirect || "{{ route('user.home') }}";
                     }, 1500);
                 } else {
+                    // Re-enable button
+                    verifyButton.disabled = false;
+                    verifyButton.textContent = 'Verify';
+                    
                     let errorMsg = data.message || 'Verification failed.';
                     if (data.errors) {
                         for (const key in data.errors) {
@@ -484,9 +487,22 @@
                 }
 
             } catch (error) {
+                // Re-enable button
+                verifyButton.disabled = false;
+                verifyButton.textContent = 'Verify';
+                
                 toastr.error("Something went wrong. Please try again.");
                 console.error("Verification error:", error);
             }
+        });
+
+        // Optional: Add input formatting for better UX
+        document.getElementById('code').addEventListener('input', function(e) {
+            // Remove any non-digit characters
+            this.value = this.value.replace(/[^0-9]/g, '');
+            
+            // Auto-uppercase (if you want letters)
+            // this.value = this.value.toUpperCase();
         });
     </script>
 </body>
