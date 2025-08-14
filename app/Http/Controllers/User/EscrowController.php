@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
+use App\Mail\AttorneyConnectionConfirmationMail;
+use App\Mail\TransactionAgreementConfirmationMail;
 use App\Models\Escrow;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\AttorneyConnectionConfirmationMail;
 
 
 
@@ -88,6 +89,7 @@ public function connect(Request $request)
 //     }
 // }
 
+
 public function TransactionAgreement(Request $request)
 {
     $request->validate([
@@ -97,26 +99,60 @@ public function TransactionAgreement(Request $request)
     $email = $request->input('email');
 
     try {
-        // Insert or update the escrow record for this user
         Escrow::updateOrCreate(
             ['user_id' => Auth::id()],
             [
                 'email' => $email,
-                'transaction_agreement_status' => 1, // agreement requested
+                'transaction_agreement_status' => 1,
             ]
         );
 
-        // Send email to the attorney
+        // Notify the attorney
         Mail::raw("User with email {$email} wants to get a transaction agreement.", function ($message) {
             $message->to('attorney@assurehold.com')
+                  
                     ->subject('New Transaction Agreement Request');
         });
 
-        return back()->with('success', 'Your request for a transaction agreement has been sent.');
+        // Notify the user
+        $userName = Auth::user()->name ?? 'Valued User';
+        Mail::to($email)->send(new TransactionAgreementConfirmationMail($userName));
+
+        return back()->with('success', 'Your request for a transaction agreement has been sent. A confirmation email has also been sent to you.');
     } catch (\Exception $e) {
         return back()->with('error', 'Something went wrong: ' . $e->getMessage());
     }
 }
+
+// public function TransactionAgreement(Request $request)
+// {
+//     $request->validate([
+//         'email' => 'required|email|max:255',
+//     ]);
+
+//     $email = $request->input('email');
+
+//     try {
+//         // Insert or update the escrow record for this user
+//         Escrow::updateOrCreate(
+//             ['user_id' => Auth::id()],
+//             [
+//                 'email' => $email,
+//                 'transaction_agreement_status' => 1, // agreement requested
+//             ]
+//         );
+
+//         // Send email to the attorney
+//         Mail::raw("User with email {$email} wants to get a transaction agreement.", function ($message) {
+//             $message->to('attorney@assurehold.com')
+//                     ->subject('New Transaction Agreement Request');
+//         });
+
+//         return back()->with('success', 'Your request for a transaction agreement has been sent.');
+//     } catch (\Exception $e) {
+//         return back()->with('error', 'Something went wrong: ' . $e->getMessage());
+//     }
+// }
 
 
 
