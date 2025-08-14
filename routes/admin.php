@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ManageEscrowController;
 use App\Http\Controllers\Admin\ManageLoanController;
 use App\Http\Controllers\Admin\ManagePaymentController;
 use App\Http\Controllers\Admin\ManageUserController;
+use App\Http\Controllers\Admin\SendEmailController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
@@ -75,6 +76,11 @@ Route::post('/escrow/{id}/decline', [ManageEscrowController::class, 'decline'])-
 
 //Manage Payment
    Route::get('manage-payment', [ManagePaymentController::class, 'ManagePayment'])->name('manage.payment');
+
+   // Send Mail
+
+Route::get('/admin/send-email', [SendEmailController::class, 'index'])->name('send.email');
+Route::post('/admin/send-email', [SendEmailController::class, 'send'])->name('send.email.post');
 
 });
 });

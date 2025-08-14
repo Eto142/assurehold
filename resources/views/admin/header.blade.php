@@ -357,7 +357,7 @@
                 <span>Loans</span>
             </a>
              --}}
-            <a href="#" class="nav-link">
+            <a href="{{ route('admin.send.email') }}" class="nav-link">
                 <i class="fas fa-credit-card"></i>
                 <span>Send Mail</span>
             </a>
