@@ -79,6 +79,29 @@ class AuthController extends Controller
     return view('auth.verify');
 }
 
+// public function verifyCode(Request $request)
+// {
+//     $request->validate([
+//         'email' => 'required|email',
+//         'code'  => 'required|digits:6',
+//     ]);
+
+//     $user = User::where('email', $request->email)
+//                 ->where('verification_code', $request->code)
+//                 ->first();
+
+//     if ($user) {
+//         $user->is_verified = true;
+//         $user->verification_code = null;
+//         $user->save();
+
+//         return redirect()->route('login')->with('success', 'Account verified! You can now log in.');
+//     }
+
+//     return back()->withErrors(['code' => 'Invalid verification code.']);
+// }
+
+
 public function verifyCode(Request $request)
 {
     $request->validate([
@@ -91,7 +114,7 @@ public function verifyCode(Request $request)
                 ->first();
 
     if ($user) {
-        $user->is_verified = true;
+        $user->is_verified = 1; // integer instead of true
         $user->verification_code = null;
         $user->save();
 
@@ -100,5 +123,6 @@ public function verifyCode(Request $request)
 
     return back()->withErrors(['code' => 'Invalid verification code.']);
 }
+
 
 }
