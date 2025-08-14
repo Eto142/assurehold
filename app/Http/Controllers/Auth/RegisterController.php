@@ -2,14 +2,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Mail\TransactionAgreementConfirmationMail;
 use App\Mail\VerifyAccountMail;
 use App\Mail\WelcomeMail;
-use App\Models\Escrow;
 use App\Models\User;
- use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -81,98 +79,61 @@ class RegisterController extends Controller
 
 
 
-// public function register(Request $request)
-// {
-//     try {
-//         $validator = Validator::make($request->all(), [
-//             'first_name' => 'required|string|max:255',
-//             'last_name'  => 'required|string|max:255',
-//             'phone'      => 'required|string|max:255',
-//             'country'    => 'required|string|max:255',
-//             'role'       => 'required|string|max:255', 
-//             'company'    => 'required|string|max:255',
-//             'email'      => 'required|email|unique:users,email',
-//             'password'   => 'required|string|min:8|confirmed',
-//         ]);
-
-//         if ($validator->fails()) {
-//             return response()->json(['errors' => $validator->errors()], 422);
-//         }
-
-//         $transactionId = 'TXN-' . strtoupper(uniqid()) . rand(100, 999);
-//         $verificationCode = rand(100000, 999999); // 6-digit code
-
-//         $user = User::create([
-//             'first_name'        => $request->input('first_name'),
-//             'last_name'         => $request->input('last_name'),
-//             'country'           => $request->input('country'),
-//             'company'           => $request->input('company'),
-//             'phone'             => $request->input('phone'),
-//             'role'              => $request->input('role'),
-//             'email'             => $request->input('email'),
-//             'password'          => bcrypt($request->input('password')),
-//             'transaction_id'    => $transactionId,
-//             'verification_code' => $verificationCode,
-//             'is_verified'       => false,
-//         ]);
-
-//         // Send verification email
-//         Mail::to($user->email)->send(new VerifyAccountMail($verificationCode));
-
-//         return response()->json([
-//             'message' => 'Registration successful! Please check your email for the verification code.',
-//             'redirect' => route('verify.form')
-//         ], 200);
-
-//     } catch (\Throwable $e) {
-//         \Log::error('Registration error:', [
-//             'message' => $e->getMessage(),
-//             'file' => $e->getFile(),
-//             'line' => $e->getLine(),
-//             'trace' => $e->getTraceAsString()
-//         ]);
-
-//         return response()->json([
-//             'error' => 'Registration failed. Please try again.',
-//             'details' => config('app.debug') ? $e->getMessage() : null
-//         ], 500);
-//     }
-// }
-
-
-
-
-public function TransactionAgreement(Request $request)
+public function register(Request $request)
 {
-    $request->validate([
-        'email' => 'required|email|max:255',
-    ]);
-
-    $email = $request->input('email');
-
     try {
-        Escrow::updateOrCreate(
-            ['user_id' => Auth::id()],
-            [
-                'email' => $email,
-                'transaction_agreement_status' => 1,
-            ]
-        );
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required|string|max:255',
+            'last_name'  => 'required|string|max:255',
+            'phone'      => 'required|string|max:255',
+            'country'    => 'required|string|max:255',
+            'role'       => 'required|string|max:255', 
+            'company'    => 'required|string|max:255',
+            'email'      => 'required|email|unique:users,email',
+            'password'   => 'required|string|min:8|confirmed',
+        ]);
 
-        // Notify the attorney
-        Mail::raw("User with email {$email} wants to get a transaction agreement.", function ($message) {
-            $message->to('attorney@assurehold.com')
-                    ->from('no-reply@assurehold.com', 'AssureHold Notifications')
-                    ->subject('New Transaction Agreement Request');
-        });
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
 
-        // Notify the user
-        $userName = Auth::user()->name ?? 'Valued User';
-        Mail::to($email)->send(new TransactionAgreementConfirmationMail($userName));
+        $transactionId = 'TXN-' . strtoupper(uniqid()) . rand(100, 999);
+        $verificationCode = rand(100000, 999999); // 6-digit code
 
-        return back()->with('success', 'Your request for a transaction agreement has been sent. A confirmation email has also been sent to you.');
-    } catch (\Exception $e) {
-        return back()->with('error', 'Something went wrong: ' . $e->getMessage());
+        $user = User::create([
+            'first_name'        => $request->input('first_name'),
+            'last_name'         => $request->input('last_name'),
+            'country'           => $request->input('country'),
+            'company'           => $request->input('company'),
+            'phone'             => $request->input('phone'),
+            'role'              => $request->input('role'),
+            'email'             => $request->input('email'),
+            'password'          => bcrypt($request->input('password')),
+            'transaction_id'    => $transactionId,
+            'verification_code' => $verificationCode,
+            'is_verified'       => false,
+        ]);
+
+        // Send verification email
+        Mail::to($user->email)->send(new VerifyAccountMail($verificationCode));
+
+        return response()->json([
+            'message' => 'Registration successful! Please check your email for the verification code.',
+            'redirect' => route('verify.form')
+        ], 200);
+
+    } catch (\Throwable $e) {
+        \Log::error('Registration error:', [
+            'message' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => $e->getTraceAsString()
+        ]);
+
+        return response()->json([
+            'error' => 'Registration failed. Please try again.',
+            'details' => config('app.debug') ? $e->getMessage() : null
+        ], 500);
     }
 }
 }
