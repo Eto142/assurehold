@@ -62,42 +62,6 @@ public function connect(Request $request)
 
 
 
-
-
-
-
-//   public function connect(Request $request)
-// {
-//     // Validate the email input
-//     $request->validate([
-//         'email' => 'required|email|max:255',
-//     ]);
-
-//     $email = $request->input('email');
-
-//     try {
-//         // Insert or update the escrow record for this user
-//         $escrow = Escrow::updateOrCreate(
-//             ['user_id' => Auth::id()],
-//             [
-//                 'email' => $email,
-//                 'connect_escrow_status' => 1, // pending status
-//             ]
-//         );
-
-//         // Send email to the attorney
-//         Mail::raw("User with email {$email} wants to connect with an attorney.", function ($message) {
-//             $message->to('attorney@assurehold.com')
-//                     ->subject('New Attorney Connection Request');
-//         });
-
-//         return back()->with('success', 'Your request has been sent to the attorney.');
-//     } catch (\Exception $e) {
-//         return back()->with('error', 'Something went wrong: ' . $e->getMessage());
-//     }
-// }
-
-
 public function TransactionAgreement(Request $request)
 {
     $request->validate([
@@ -107,6 +71,13 @@ public function TransactionAgreement(Request $request)
     $email = $request->input('email');
 
     try {
+
+            // Check if escrow record exists for the logged-in user
+        $escrow = Escrow::where('user_id', Auth::id())->first();
+
+        if (!$escrow) {
+            return back()->with('error', 'Verify wallet account first.');
+        }
         Escrow::updateOrCreate(
             ['user_id' => Auth::id()],
             [
