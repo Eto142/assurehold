@@ -1,5 +1,4 @@
 @include('user.header')
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 @if(session('success'))
@@ -12,6 +11,18 @@
     });
 </script>
 @endif
+
+@if(session('error'))
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: '{{ session("error") }}',
+        confirmButtonColor: '#d33'
+    });
+</script>
+@endif
+
 
   <!-- Main Content -->
             <main class="main-content">
