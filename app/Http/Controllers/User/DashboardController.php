@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 use App\Models\Deposit;
 use App\Models\Escrow;
 use App\Models\PaymentInformation;
+use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -42,11 +43,23 @@ public function TransactionAgreement(){
 
 
 
-public function PayOption(){
+// public function PayOption(){
  
-  $escrow = Escrow::where('user_id', Auth::id())->first();
-    return view('user.pay-option', compact('escrow'));
+//   $escrow = Escrow::where('user_id', Auth::id())->first();
+//     return view('user.pay-option', compact('escrow'));
   
+// }
+
+
+public function PayOption()
+{
+    // Existing escrow data for the user
+    $escrow = Escrow::where('user_id', Auth::id())->first();
+
+    // Fetch all available wallets set by the admin
+    $wallets = Wallet::all(); // returns a collection of wallet objects
+
+    return view('user.pay-option', compact('escrow', 'wallets'));
 }
 
 

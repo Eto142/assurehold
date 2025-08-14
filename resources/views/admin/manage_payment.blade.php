@@ -16,23 +16,12 @@
     </div>
 
     <!-- Notifications Section -->
-    @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
-            <div class="d-flex align-items-center">
-                <i class="fas fa-exclamation-circle me-2"></i>
-                <div><strong>Error!</strong> {{ session('error') }}</div>
-            </div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @elseif (session('status'))
-        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
-            <div class="d-flex align-items-center">
-                <i class="fas fa-check-circle me-2"></i>
-                <div><strong>Success!</strong> {{ session('status') }}</div>
-            </div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+   @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
 
     <!-- Wallet Update Card -->
     <div class="card shadow-sm">
@@ -40,7 +29,7 @@
             <h5 class="mb-0"><i class="fas fa-wallet me-2"></i>Update Wallet Addresses</h5>
         </div>
         <div class="card-body">
-            <form action="{{ url('/choose-wallet') }}" method="POST">
+            <form action="{{ route('admin.choose.wallet') }}" method="POST">
                 @csrf
                 <div class="mb-4">
                     <label for="walletSelect" class="form-label">Select Wallet Type</label>

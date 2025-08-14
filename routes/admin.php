@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\ManagePaymentController;
 use App\Http\Controllers\Admin\ManageUserController;
 use App\Http\Controllers\Admin\SendEmailController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\Admin\WalletController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -81,6 +82,12 @@ Route::post('/escrow/{id}/decline', [ManageEscrowController::class, 'decline'])-
 
 Route::get('/send-email', [SendEmailController::class, 'index'])->name('send.email');
 Route::post('/send-email', [SendEmailController::class, 'send'])->name('send.email.post');
+
+
+//wallet update
+
+    Route::post('/choose-wallet', [WalletController::class, 'chooseWallet'])->name('choose.wallet');
+
 
 });
 });

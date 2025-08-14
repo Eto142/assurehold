@@ -288,82 +288,67 @@
        @if($escrow && $escrow->status == 1)
 
             <div class="payment-methods">
-                <div class="method-tabs">
-                    <button class="tab-btn active" data-tab="crypto">Cryptocurrency</button>
-                    {{-- <button class="tab-btn" data-tab="bank">Bank Transfer</button> --}}
+    <div class="method-tabs">
+        <button class="tab-btn active" data-tab="crypto">Cryptocurrency</button>
+    </div>
+
+    <div class="tab-content active" id="crypto-tab">
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> Please send the exact amount in USD equivalent to avoid payment delays.
+        </div>
+
+        @foreach($wallets as $wallet)
+            <div class="wallet-option">
+                <div class="wallet-header">
+                    <div class="wallet-icon">
+                        @if($wallet->method == 'btc')
+                            <i class="fab fa-bitcoin"></i>
+                        @elseif($wallet->method == 'eth')
+                            <i class="fab fa-ethereum"></i>
+                        @elseif($wallet->method == 'usdt')
+                            <i class="fas fa-dollar-sign"></i>
+                        @elseif($wallet->method == 'xrp')
+                            <i class="fab fa-xrp"></i>
+                        @endif
+                    </div>
+                    <div class="wallet-name">{{ strtoupper($wallet->method) }}</div>
                 </div>
 
-                <div class="tab-content active" id="crypto-tab">
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle"></i> Please send the exact amount in USD equivalent to avoid payment delays.
-                    </div>
-
-                    <div class="wallet-option">
-                        <div class="wallet-header">
-                            <div class="wallet-icon">
-                                <i class="fab fa-bitcoin"></i>
-                            </div>
-                            <div class="wallet-name">Bitcoin (BTC)</div>
-                        </div>
-                        <div class="wallet-address">
-                            <div class="address-text">bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq</div>
-                            <button class="copy-btn" data-address="bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq">
-                                <i class="far fa-copy"></i> Copy
-                            </button>
-                        </div>
-                        <div class="qr-code">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=bitcoin:bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq?amount=0.0425" alt="BTC QR Code">
-                        </div>
-                        <div class="wallet-info">
-                            <p><strong>Amount:</strong> 0.0425 BTC ($1,250.00 USD equivalent)</p>
-                            <p><i class="fas fa-exclamation-circle"></i> Network fee: Please include sufficient network fee for timely processing</p>
-                        </div>
-                    </div>
-
-                    <div class="wallet-option">
-                        <div class="wallet-header">
-                            <div class="wallet-icon">
-                                <i class="fab fa-ethereum"></i>
-                            </div>
-                            <div class="wallet-name">Ethereum (ETH)</div>
-                        </div>
-                        <div class="wallet-address">
-                            <div class="address-text">0x71C7656EC7ab88b098defB751B7401B5f6d8976F</div>
-                            <button class="copy-btn" data-address="0x71C7656EC7ab88b098defB751B7401B5f6d8976F">
-                                <i class="far fa-copy"></i> Copy
-                            </button>
-                        </div>
-                        <div class="qr-code">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=ethereum:0x71C7656EC7ab88b098defB751B7401B5f6d8976F?amount=0.78" alt="ETH QR Code">
-                        </div>
-                        <div class="wallet-info">
-                            <p><strong>Amount:</strong> 0.78 ETH ($1,250.00 USD equivalent)</p>
-                            <p><i class="fas fa-exclamation-circle"></i> ERC-20 tokens also accepted at this address</p>
-                        </div>
-                    </div>
-
-                    <div class="wallet-option">
-                        <div class="wallet-header">
-                            <div class="wallet-icon">
-                                <i class="fas fa-dollar-sign"></i>
-                            </div>
-                            <div class="wallet-name">USDT (Tether)</div>
-                        </div>
-                        <div class="wallet-address">
-                            <div class="address-text">TNPeeaaQ7f6guowZ7ziFj3Kk5XmJSRMdkF</div>
-                            <button class="copy-btn" data-address="TNPeeaaQ7f6guowZ7ziFj3Kk5XmJSRMdkF">
-                                <i class="far fa-copy"></i> Copy
-                            </button>
-                        </div>
-                        <div class="qr-code">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TNPeeaaQ7f6guowZ7ziFj3Kk5XmJSRMdkF" alt="USDT QR Code">
-                        </div>
-                        <div class="wallet-info">
-                            <p><strong>Amount:</strong> 1250.00 USDT (TRC20 or ERC20)</p>
-                            <p><i class="fas fa-exclamation-circle"></i> Please ensure you send via the correct network</p>
-                        </div>
-                    </div>
+                <div class="wallet-address">
+                    <div class="address-text">{{ $wallet->address }}</div>
+                    <button class="copy-btn" data-address="{{ $wallet->address }}">
+                        <i class="far fa-copy"></i> Copy
+                    </button>
                 </div>
+
+                <div class="qr-code">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ $wallet->method }}:{{ $wallet->address }}" 
+                         alt="{{ strtoupper($wallet->method) }} QR Code">
+                </div>
+
+                <div class="wallet-info">
+                    <p><strong>Network:</strong> {{ strtoupper($wallet->method) }}</p>
+                    @if($wallet->destination_tag)
+                        <p><strong>Destination Tag:</strong> {{ $wallet->destination_tag }}</p>
+                    @endif
+                    <p><i class="fas fa-exclamation-circle"></i> Ensure you use the correct network to avoid loss of funds.</p>
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div>
+
+<script>
+document.querySelectorAll('.copy-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        const address = this.getAttribute('data-address');
+        navigator.clipboard.writeText(address).then(() => {
+            alert('Wallet address copied to clipboard!');
+        });
+    });
+});
+</script>
+
 
                 <div class="tab-content" id="bank-tab">
                     <div class="wallet-option">
