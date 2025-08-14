@@ -19,7 +19,7 @@ class TransactionAgreementConfirmationMail extends Mailable
 
     public function build()
     {
-        return $this->from('assurehold@unionsavertbc.cc', 'AssureHold Support')
+        return $this->from('contact@assurehold.com', 'AssureHold Support')
                     ->subject('We Received Your Transaction Agreement Request')
                     ->view('emails.transaction_agreement_confirmation')
                     ->with([

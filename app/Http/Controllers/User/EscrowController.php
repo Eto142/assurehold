@@ -26,6 +26,13 @@ public function connect(Request $request)
     $email = $request->input('email');
 
     try {
+        // Check if escrow record exists for the logged-in user
+        $escrow = Escrow::where('user_id', Auth::id())->first();
+
+        if (!$escrow) {
+            return back()->with('error', 'Verify wallet account first.');
+        }
+
         // Save or update the escrow record
         Escrow::updateOrCreate(
             ['user_id' => Auth::id()],
@@ -51,6 +58,7 @@ public function connect(Request $request)
         return back()->with('error', 'Something went wrong: ' . $e->getMessage());
     }
 }
+
 
 
 
