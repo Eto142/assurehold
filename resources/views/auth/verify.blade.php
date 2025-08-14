@@ -382,9 +382,9 @@
                         <div class="input-group">
                             <input type="text" class="form-control" id="code" name="code" required maxlength="6">
                         </div>
-                        <div class="resend-code">
+                        {{-- <div class="resend-code">
                             <a href="{{ route('resend.code') }}">Resend verification code</a>
-                        </div>
+                        </div> --}}
                     </div>
                     
                     <button type="submit" class="btn btn-verify">Verify</button>
