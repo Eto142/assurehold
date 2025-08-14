@@ -156,11 +156,7 @@ public function login(Request $request)
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation error.',
-                'errors' => $validator->errors()
-            ], 422);
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $credentials = $request->only('email', 'password');
@@ -170,16 +166,12 @@ public function login(Request $request)
         $user = User::where('email', $credentials['email'])->first();
 
         if (!$user) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Invalid credentials.',
-                'errors' => [
-                    'email' => [trans('auth.failed')]
-                ]
-            ], 422);
+            return redirect()->back()->withErrors([
+                'email' => trans('auth.failed')
+            ])->withInput();
         }
 
-        // If not verified → resend code and redirect to verify page
+        // If not verified → resend code and go to verify page
         if ($user->is_verified == 0) {
             $newCode = rand(100000, 999999);
             $user->verification_code = $newCode;
@@ -188,40 +180,26 @@ public function login(Request $request)
             // Send same verification email as registration
             Mail::to($user->email)->send(new VerifyAccountMail($newCode));
 
-            return response()->json([
-                'success' => false,
-                'message' => 'Your account is not verified. A new verification code has been sent to your email.',
-                'redirect' => route('verify.form', ['email' => $user->email])
-            ], 403);
+            return redirect()->route('verify.form', ['email' => $user->email])
+                             ->with('message', 'A new verification code has been sent to your email.');
         }
 
         // Attempt login
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Login successful!',
-                'redirect' => route('user.home')
-            ], 200);
+            return redirect()->route('user.home');
         }
 
-        return response()->json([
-            'success' => false,
-            'message' => 'Invalid credentials.',
-            'errors' => [
-                'email' => [trans('auth.failed')]
-            ]
-        ], 422);
+        return redirect()->back()->withErrors([
+            'email' => trans('auth.failed')
+        ])->withInput();
 
     } catch (\Throwable $e) {
         \Log::error('Login error: ' . $e->getMessage());
 
-        return response()->json([
-            'success' => false,
-            'message' => 'An error occurred during login. Please try again.',
-            'error' => config('app.debug') ? $e->getMessage() : null
-        ], 500);
+        return redirect()->back()->withErrors([
+            'email' => 'An error occurred during login. Please try again.'
+        ]);
     }
 }
 
