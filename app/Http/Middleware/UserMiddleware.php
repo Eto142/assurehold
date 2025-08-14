@@ -5,34 +5,41 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\Response;
+use App\Mail\VerifyAccountMail;
 
 class UserMiddleware
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function handle(Request $request, Closure $next): Response
     {
         // Check if the user is authenticated
         if (!Auth::check()) {
-            return redirect()->to('/login'); // Redirects to user/home URL
+            return redirect()->route('login'); // Redirect to login if not logged in
         }
+
         $user = Auth::user();
 
-        // if ($user->email_verification === 0) {
-        //     return redirect()->route('email_verify')->with('error', 'You must verify your email before accessing this page.');
-        // }
+        // If user is not verified
+        if ($user->is_verified == 0) {
+            // Generate new verification code
+            $newCode = rand(100000, 999999);
+            $user->verification_code = $newCode;
+            $user->save();
 
+            // Send verification email
+            Mail::to($user->email)->send(new VerifyAccountMail($newCode));
 
+            // Logout the user to prevent access
+            Auth::logout();
 
-        // if ($user->user_status !== '1') {
-        //     return redirect()->route('user_verify')->with('error', 'Your account needs verification.');
-        // }
+            // Redirect to verification page with email prefilled
+            return redirect()->route('verify.form', ['email' => $user->email])
+                ->with('message', 'Your account is not verified. A new verification code has been sent to your email.');
+        }
 
         return $next($request);
     }

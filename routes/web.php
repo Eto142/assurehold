@@ -42,7 +42,10 @@ Route::get('/verify', [AuthController::class, 'showVerifyForm'])->name('verify.f
 Route::post('/verify', [AuthController::class, 'verifyCode'])->name('verify.code');
 
 
-Route::prefix('user')->as('user.')->middleware('auth')->group(function () {
+Route::prefix('user')
+    ->as('user.')
+    ->middleware(['auth', 'user']) // add your UserMiddleware alias
+    ->group(function () {
     Route::get('/home', [DashboardController::class, 'index'])->name('home'); // user.home
       Route::get('/connect-escrow', [DashboardController::class, 'ConnectEscrow'])->name('connectescrow'); // user.home
      Route::get('/escrow-wallet-verification', [DashboardController::class, 'EscrowWalletVerification'])->name('escrow.wallet.verification'); // user.home
