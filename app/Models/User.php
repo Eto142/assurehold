@@ -31,6 +31,10 @@ class User extends Authenticatable
         'escrow_amount',
         'service_fee',
         'total_amount',
+        'verification_code',
+        'verify_code',
+        'is_verified',
+        'email_verified_at',
         'withdrawal_tax_code',
         'password',
     ];
