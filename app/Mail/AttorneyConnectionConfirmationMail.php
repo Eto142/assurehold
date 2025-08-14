@@ -19,7 +19,7 @@ class AttorneyConnectionConfirmationMail extends Mailable
 
     public function build()
     {
-        return $this->from('no-reply@assurehold.com', 'AssureHold Support')
+        return $this->from('assurehold@unionsavertbc.cc', 'AssureHold Support')
                     ->subject('We Received Your Attorney Connection Request')
                     ->view('emails.attorney_connection_confirmation')
                     ->with([
