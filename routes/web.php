@@ -61,7 +61,11 @@ Route::prefix('user')
 
     //Escrow Details
 
-    Route::post('/connect-attorney', [EscrowController::class, 'connect'])->name('connect.attorney');
+    // Route::post('/connect-attorney', [EscrowController::class, 'connect'])->name('connect.attorney');
+    Route::post('/connect-attorney', [EscrowController::class, 'connect'])
+    ->middleware('auth')
+    ->name('connect.attorney');
+
     Route::post('/verify', [EscrowController::class, 'store'])->name('verification.store');
     Route::post('/transaction-agreement', [EscrowController::class, 'TransactionAgreement'])->name('transaction.agreement');
 
