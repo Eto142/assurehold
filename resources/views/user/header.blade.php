@@ -40,14 +40,18 @@
                             <i class="fas fa-chevron-down"></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
-                            {{-- <li><a class="dropdown-item" href="#"><i class="fas fa-bell me-2"></i>Notifications</a></li> --}}
+                            <li><a class="dropdown-item" href="{{ route('user.profile') }}"><i class="fas fa-user me-2"></i>Profile</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">
-                                
-                                
-                                <i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                            
+                       <li class="nav-item">
+    <form action="{{ route('user.logout') }}" method="POST" style="display:inline;">
+        @csrf
+        <button type="submit" class="nav-link" style="background:none; border:none; padding:0; color:inherit; cursor:pointer;">
+            <i class="fas fa-sign-out-alt me-2"></i> Logout
+        </button>
+    </form>
+</li>
+
                                 
                         </ul>
                     </div>
@@ -116,13 +120,13 @@
                         </a>
                     </li>
 
-                    {{-- <li class="nav-item">
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('user.profile') }}">
                             <i class="fas fa-user-check"></i>
                             <span>Profile</span>
                          
                         </a>
-                    </li>  --}}
+                    </li> 
 
                     <li class="nav-item mt-3">
                         <a class="nav-link" href="{{ route('user.support') }}">

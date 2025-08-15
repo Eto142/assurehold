@@ -55,9 +55,9 @@ Route::prefix('user')
     Route::get('/cashout', [DashboardController::class, 'Cashout'])->name('cashout'); // user.cashout
     Route::get('/support', [DashboardController::class, 'Support'])->name('support'); // user.cashout  
     Route::get('/profile', [DashboardController::class, 'Profile'])->name('profile'); // user.cashout   
-    Route::get('/profile-update', [DashboardController::class, 'ProfileUpdate'])->name('profile.update'); // user.cashout  
-    Route::get('/password-update', [DashboardController::class, 'PasswordUpdate'])->name('password.update'); // user.cashout  
-   
+    Route::post('/profile-update', [DashboardController::class, 'updateProfile'])->name('profile.update'); // user.cashout  
+    Route::post('/password-update', [DashboardController::class, 'updatePassword'])->name('password.update'); // user.cashout  
+    Route::post('/support', [DashboardController::class, 'UseSupport'])->name('support.submit'); // user.cashout  
 
     //Escrow Details
 
