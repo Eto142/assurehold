@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class DashboardController extends Controller
 {
@@ -125,10 +126,30 @@ public function Profile(){
 
         return back()->with('success', 'Password updated successfully.');
     }
-}
+
+
+public function UseSupport(Request $request)
+    {
+        $request->validate([
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
+
+        $user = Auth::user(); // logged-in user
+        $adminEmail = "info@assurehold.com"; // change to your admin email
+
+        // Send mail directly without mailable template
+        Mail::raw("New Support Request\n\nFrom: {$user->name} ({$user->email})\n\nSubject: {$request->subject}\n\nMessage:\n{$request->message}", function ($message) use ($adminEmail, $request) {
+            $message->to($adminEmail)
+                    ->subject('Support Request: ' . $request->subject);
+        });
+
+        return back()->with('success', 'Your support message has been sent successfully!');
+    }
 
 
 
+  }
 
 
 
