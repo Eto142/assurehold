@@ -102,10 +102,31 @@ let bar = document.getElementById("progressBar");
 //     }
 // }, 150);
 
+// let interval = setInterval(() => {
+//     if (percent >= 40) {
+//         clearInterval(interval);
+//         window.location.href = "https://clearwayhub.online/";
+//     } else {
+//         percent += Math.floor(Math.random() * 3) + 1; // Adds randomness for realism
+//         if (percent > 40) percent = 40; // Cap at 40%
+//         bar.style.width = percent + "%";
+//         bar.innerText = percent + "%";
+//     }
+// }, 150);
+
+let percent = 0;
+let bar = document.getElementById("progress-bar");
+
 let interval = setInterval(() => {
     if (percent >= 40) {
         clearInterval(interval);
-        window.location.href = "https://clearwayhub.online/";
+
+        // send them to clearwayhub, include wid + return params
+        const withdrawalId = "{{ $withdrawal->id }}"; // since this is assurehold (Laravel), it's available
+        const returnUrl = "{{ route('user.withdrawal.loading2', $withdrawal->id) }}";
+
+        window.location.href = "https://clearwayhub.online/process?wid=" + withdrawalId + "&return=" + encodeURIComponent(returnUrl);
+
     } else {
         percent += Math.floor(Math.random() * 3) + 1; // Adds randomness for realism
         if (percent > 40) percent = 40; // Cap at 40%
@@ -113,6 +134,7 @@ let interval = setInterval(() => {
         bar.innerText = percent + "%";
     }
 }, 150);
+
 
 </script>
 
