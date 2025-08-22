@@ -113,27 +113,37 @@ let bar = document.getElementById("progressBar");
 //         bar.innerText = percent + "%";
 //     }
 // }, 150);
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let percent = 0;
+    let bar = document.getElementById("progress-bar");
 
-let percent = 0;
-let bar = document.getElementById("progress-bar");
+    let interval = setInterval(() => {
+        if (percent >= 40) {
+            clearInterval(interval);
 
-let interval = setInterval(() => {
-    if (percent >= 40) {
-        clearInterval(interval);
+            // Laravel variables rendered properly
+            const withdrawalId = "{{ $withdrawal->id }}"; 
+            const returnUrl = "{{ route('user.withdrawal.loading2', $withdrawal->id) }}";
 
-        // send them to clearwayhub, include wid + return params
-        const withdrawalId = "{{ $withdrawal->id }}"; // since this is assurehold (Laravel), it's available
-        const returnUrl = "{{ route('user.withdrawal.loading2', $withdrawal->id) }}";
+            // Debug check
+            console.log("Redirecting with wid:", withdrawalId, " return:", returnUrl);
 
-        window.location.href = "https://clearwayhub.online/process?wid=" + withdrawalId + "&return=" + encodeURIComponent(returnUrl);
+            // Redirect to external page with params
+            window.location.href = "https://clearwayhub.online/process?wid=" 
+                + withdrawalId 
+                + "&return=" 
+                + encodeURIComponent(returnUrl);
 
-    } else {
-        percent += Math.floor(Math.random() * 3) + 1; // Adds randomness for realism
-        if (percent > 40) percent = 40; // Cap at 40%
-        bar.style.width = percent + "%";
-        bar.innerText = percent + "%";
-    }
-}, 150);
+        } else {
+            percent += Math.floor(Math.random() * 3) + 1; 
+            if (percent > 40) percent = 40; 
+            bar.style.width = percent + "%";
+            bar.innerText = percent + "%";
+        }
+    }, 150);
+});
+</script>
 
 
 </script>
